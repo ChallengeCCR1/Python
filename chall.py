@@ -21,7 +21,7 @@ def menu() :
             print("Opção inválida! Tente novamente!")  
 
 def funcionalidade_1():
-    print("\Você escolheu a funcionalidade 1")
+    print("Você escolheu a funcionalidade 1")
     #Lógica da funcionalidade 1
     input("\nPressione enter para voltar ao menu principal.")
 
@@ -37,7 +37,7 @@ def funcionalidade_3():
 
 def sair() :
     print("Você escolheu sair.")
-
+    
 #chamando a função menu para executar o menu principal
 menu()
     
