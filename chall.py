@@ -1,9 +1,10 @@
 def menu() :
     while True :
         print("\n-------MENU PRINCIPAL-------")
-        print("\nFuncionalidade 1")
-        print("\nFuncionalidade 2")
-        print("\nFuncionalidade 3")
+        print("\n1. Funcionalidade 1")
+        print("\n2. Funcionalidade 2")
+        print("\n3. Funcionalidade 3")
+        print("\n4. Sair")
 
         opcao = input("Escolha a sua opção: ")
 
@@ -14,7 +15,7 @@ def menu() :
         elif opcao == '3' :
             funcionalidade_3()
         elif opcao == '4' :
-            print("Saindo...")
+            sair()
             break
         else :
             print("Opção inválida! Tente novamente!")  
@@ -33,6 +34,9 @@ def funcionalidade_3():
     print("\nVocê escolheu a funcionalidade 3")
     #Lógica da funcionalidade 3
     input("Pressione enter para voltar ao menu principal.")
+
+def sair() :
+    print("Você escolheu sair.")
 
 #chamando a função menu para executar o menu principal
 menu()
