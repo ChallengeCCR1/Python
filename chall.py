@@ -20,23 +20,69 @@ def menu() :
         else :
             print("Opção inválida! Tente novamente!")  
 
+## funcionalidade 1
 def funcionalidade_1():
+    
     print("Você escolheu a funcionalidade 1")
-    #Lógica da funcionalidade 1
 
-    input("\nPressione enter para voltar ao menu principal.")
+    while True : 
+        print("\n-------Linhas de metrô CCR-------")
+        print("\n1. Linha 4 amarela")
+        print("\n2. Linha 8 Diamente")
+        print("\n3. Linha 9 Esmeralda")
+        print("\n4. Voltar")
 
+        opcao2 = input("Escolha sua opção: ")
+
+        if opcao2 ==  '1' :
+            print("Linha 4 amarela.")
+        elif opcao2 == '2' :
+            print("Linha 8.") 
+        elif opcao2 == '3' :
+            print("Linha 9.")
+        elif opcao2 == '4' :
+            voltar ()
+            break
+        else :
+            print("Opção inválida. Por favor escolha uma opção disponível.")
+
+        input("\nPressione enter para voltar ao menu principal.")
+
+## funcionalidade 2
 def  funcionalidade_2():
     print("Você escolheu a funcionalidade 2")
-    #Lógica da funcionalidade 2
-    input("\nPressione enter para voltar ao menu principal.")
+    
+    while True : 
+        print("\n-------Horário de funcionamento-------")
+        print("\n1. Linha 4 amarela")
+        print("\n2. Linha 8 Diamente")
+        print("\n3. Linha 9 Esmeralda")
+        print("\n4. Voltar")
 
+        opcao2 = input("Escolha sua opção: ")
+
+        if opcao2 ==  '1' :
+            print("Linha 4 amarela funciona das 04h40 AM até as 00h.")
+        elif opcao2 == '2' :
+            print("Linha 8 diamente funciona das 04h00 AM até as 00h.") 
+        elif opcao2 == '3' :
+            print("Linha 9 Esmeralda funciona 04h00 AM até as 00h.")
+        elif opcao2 == '4' :
+            voltar ()
+            break
+        else :
+            print("Opção inválida. Por favor escolha uma opção disponível.")
+
+        input("Pressione enter para voltar ao menu principal.")
+
+
+## funcionalidade 3
 def funcionalidade_3():
 
     print("\nVocê escolheu a funcionalidade 3")
 
     while True : 
-        print("\n-------Linhas de metrô-------")
+        print("\n-------Funcionamento-------")
         print("\n1. Linha 4 amarela")
         print("\n2. Linha 8 Diamente")
         print("\n3. Linha 9 Esmeralda")
@@ -57,7 +103,6 @@ def funcionalidade_3():
             print("Opção inválida. Por favor escolha uma opção disponível.")
 
         input("Pressione enter para voltar ao menu principal.")
-
 
 def voltar() :
     input("Pressione enter para voltar ao menu.")
