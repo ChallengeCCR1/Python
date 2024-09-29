@@ -27,19 +27,19 @@ def funcionalidade_1():
 
     while True : 
         print("\n-------Linhas de metrô CCR-------")
-        print("\n1. Linha 4 amarela")
-        print("\n2. Linha 8 Diamente")
+        print("\n1. Linha 4 Amarela")
+        print("\n2. Linha 8 Diamante")
         print("\n3. Linha 9 Esmeralda")
         print("\n4. Voltar")
 
         opcao2 = input("Escolha sua opção: ")
 
         if opcao2 ==  '1' :
-            print("Linha 4 amarela.")
+            print("Linha 4 Amarela.")
         elif opcao2 == '2' :
-            print("Linha 8.") 
+            print("Linha 8 Diamante.") 
         elif opcao2 == '3' :
-            print("Linha 9.")
+            print("Linha 9 Esmeralda.")
         elif opcao2 == '4' :
             voltar ()
             break
@@ -54,17 +54,17 @@ def  funcionalidade_2():
     
     while True : 
         print("\n-------Horário de funcionamento-------")
-        print("\n1. Linha 4 amarela")
-        print("\n2. Linha 8 Diamente")
+        print("\n1. Linha 4 Amarela")
+        print("\n2. Linha 8 Diamante")
         print("\n3. Linha 9 Esmeralda")
         print("\n4. Voltar")
 
         opcao2 = input("Escolha sua opção: ")
 
         if opcao2 ==  '1' :
-            print("Linha 4 amarela funciona das 04h40 AM até as 00h.")
+            print("Linha 4 Amarela funciona das 04h40 AM até as 00h.")
         elif opcao2 == '2' :
-            print("Linha 8 diamente funciona das 04h00 AM até as 00h.") 
+            print("Linha 8 diamante funciona das 04h00 AM até as 00h.") 
         elif opcao2 == '3' :
             print("Linha 9 Esmeralda funciona 04h00 AM até as 00h.")
         elif opcao2 == '4' :
@@ -83,17 +83,17 @@ def funcionalidade_3():
 
     while True : 
         print("\n-------Funcionamento-------")
-        print("\n1. Linha 4 amarela")
-        print("\n2. Linha 8 Diamente")
+        print("\n1. Linha 4 Amarela")
+        print("\n2. Linha 8 Diamante")
         print("\n3. Linha 9 Esmeralda")
         print("\n4. Voltar")
 
         opcao2 = input("Escolha sua opção: ")
 
         if opcao2 ==  '1' :
-            print("Linha 4 amarela funcionando normalmente.")
+            print("Linha 4 Amarela funcionando normalmente.")
         elif opcao2 == '2' :
-            print("Linha 8 diamente funcionando normalmente.") 
+            print("Linha 8 Diamante funcionando normalmente.") 
         elif opcao2 == '3' :
             print("Linha 9 Esmeralda funcionando normalmente.")
         elif opcao2 == '4' :
