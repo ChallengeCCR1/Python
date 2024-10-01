@@ -111,5 +111,6 @@ def sair() :
     print("Você escolheu sair.")
     
 #chamando a função menu para executar o menu principal
-menu()
+if __name__ == "__main__":
+    menu()
     
