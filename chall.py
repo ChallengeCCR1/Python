@@ -5,7 +5,6 @@ def menu() :
         print("\n2. Funcionalidade 2")
         print("\n3. Funcionalidade 3")
         print("\n4. Sair")
-
         opcao = input("Escolha a sua opção: ")
 
         if opcao == '1' :
