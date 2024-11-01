@@ -70,30 +70,32 @@ def voltar():
     input("Pressione enter para voltar ao menu.")
 
 def funcionalidade_2():
-    print("Você escolheu saber sobre o horário de funcionamento das linhas.")
+    print("\n\nEscolha duas linhas para comparar:")
+    linhas = {
+        '1': ("Linha 4 Amarela", "04h40 até 00h"),
+        '2': ("Linha 8 Diamante", "04h00 até 00h"),
+        '3': ("Linha 9 Esmeralda", "04h00 até 00h"),
+    }
     
-    while True: 
-        print("\n------- Horários de Funcionamento -------")
-        print("1. Linha 4 Amarela")
-        print("2. Linha 8 Diamante")
-        print("3. Linha 9 Esmeralda")
-        print("4. Voltar")
+    for chave, valor in linhas.items():
+        print(f"{chave}. {valor[0]}")
+    
+    escolha1 = input("Escolha a primeira linha: ")
+    escolha2 = input("Escolha a segunda linha: ")
 
-        opcao = input("Escolha sua opção (1-4): ")
-
-        if opcao == '1':
-            print("Linha 4 Amarela funciona das 04h40 até as 00h.")
-        elif opcao == '2':
-            print("Linha 8 Diamante funciona das 04h00 até as 00h.")
-        elif opcao == '3':
-            print("Linha 9 Esmeralda funciona das 04h00 até as 00h.")
-        elif opcao == '4':
-            voltar()
-            break
-        else:
-            print("Opção inválida. Por favor, escolha uma opção disponível.")
-        
-        input("Pressione enter para voltar ao menu principal.")
+    if escolha1 == escolha2 or escolha1 not in linhas or escolha2 not in linhas:
+        print("Escolha inválida. Tente novamente.")
+        return
+    
+    print("\nComparativo de Linhas:")
+    print("| Linha               | Horário de Funcionamento     |")
+    print("|---------------------|------------------------------|")
+    
+    for escolha in [escolha1, escolha2]:
+        linha_info = linhas[escolha]
+        print(f"| {linha_info[0]} | {linha_info[1]}")
+    
+    input("\nPressione enter para voltar ao menu.")
 
 # Função para exibir status das linhas
 def funcionalidade_3():
@@ -111,9 +113,9 @@ def funcionalidade_3():
         if opcao == '1':
             print("Linha 4 Amarela está funcionando normalmente.")
         elif opcao == '2':
-            print("Linha 8 Diamante está funcionando normalmente.")
+            print("Linha 8 Diamante está com atrasos de 5 minutos.")
         elif opcao == '3':
-            print("Linha 9 Esmeralda está funcionando normalmente.")
+            print("Linha 9 Esmeralda está com interrupção no trilho.")
         elif opcao == '4':
             voltar()
             break
@@ -127,7 +129,7 @@ def menu():
     while True:
         print("\n-------MENU PRINCIPAL-------")
         print("1. Analisar horários de pico")
-        print("2. Ver horários de funcionamento das linhas")
+        print("2. Comparar duas linhas")
         print("3. Ver status de funcionamento das linhas")
         print("4. Sair")
         
