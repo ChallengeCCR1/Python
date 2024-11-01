@@ -3,11 +3,13 @@ def coletar_dados():
     horarios = []
     pessoas_entraram = []
     
-    # Pedir ao usuário para inserir os dados
     while True:
         horario = input("Digite o horário (formato HH:MM) ou 'sair' para terminar: ")
         if horario.lower() == 'sair':
             break
+        if not validar_horario(horario):
+            print("Formato de horário inválido. Por favor, use HH:MM.")
+            continue
         try:
             pessoas = int(input(f"Quantas pessoas entraram às {horario}? "))
             horarios.append(horario)
@@ -17,20 +19,29 @@ def coletar_dados():
     
     return horarios, pessoas_entraram
 
+# Função para validar o formato do horário
+def validar_horario(horario):
+    if len(horario) != 5 or horario[2] != ':':
+        return False
+    partes = horario.split(':')
+    try:
+        horas = int(partes[0])
+        minutos = int(partes[1])
+        return 0 <= horas < 24 and 0 <= minutos < 60
+    except ValueError:
+        return False
+
 # Função para encontrar o horário de pico
 def encontrar_pico(horarios, pessoas_entraram):
     maior_numero = max(pessoas_entraram)
     indice_do_pico = pessoas_entraram.index(maior_numero)
     horario_de_pico = horarios[indice_do_pico]
-    
     return horario_de_pico, maior_numero
 
 # Função para calcular a média de pessoas por horário
 def calcular_media(pessoas_entraram):
     total_pessoas = sum(pessoas_entraram)
-    media_pessoas = total_pessoas / len(pessoas_entraram)
-    
-    return media_pessoas
+    return total_pessoas / len(pessoas_entraram) if pessoas_entraram else 0
 
 # Função para exibir os dados de maneira organizada
 def exibir_resultados(horarios, pessoas_entraram, horario_de_pico, maior_numero, media_pessoas):
@@ -41,79 +52,75 @@ def exibir_resultados(horarios, pessoas_entraram, horario_de_pico, maior_numero,
     print(f"\nO horário de pico foi {horario_de_pico}, com {maior_numero} pessoas.")
     print(f"A média de pessoas por horário foi {media_pessoas:.2f}.")
 
+
 # Função para analisar o horário de pico
 def funcionalidade_1():
     print("Você escolheu a análise de horários de pico!")
     horarios, pessoas_entraram = coletar_dados()
-    if horarios:
-        horario_de_pico, maior_numero = encontrar_pico(horarios, pessoas_entraram)
-        media_pessoas = calcular_media(pessoas_entraram)
-        exibir_resultados(horarios, pessoas_entraram, horario_de_pico, maior_numero, media_pessoas)
-    else:
-        print("Nenhum dado foi inserido.")
+    
+    if not horarios:
+        print("Nenhum dado foi inserido!")
+        return
 
-def voltar() :
-        input("Pressione enter para voltar ao menu.")
+    horario_de_pico, maior_numero = encontrar_pico(horarios, pessoas_entraram)
+    media_pessoas = calcular_media(pessoas_entraram)
+    exibir_resultados(horarios, pessoas_entraram, horario_de_pico, maior_numero, media_pessoas)
 
-# Função para exibir horários de funcionamento das linhas
+def voltar():
+    input("Pressione enter para voltar ao menu.")
+
 def funcionalidade_2():
-    print("Você escolheu a funcionalidade 2")
+    print("Você escolheu saber sobre o horário de funcionamento das linhas.")
+    
+    while True: 
+        print("\n------- Horários de Funcionamento -------")
+        print("1. Linha 4 Amarela")
+        print("2. Linha 8 Diamante")
+        print("3. Linha 9 Esmeralda")
+        print("4. Voltar")
 
-    while True : 
-        print("\n-------Horário de funcionamento-------")
-        print("\n1. Linha 4 Amarela")
-        print("\n2. Linha 8 Diamante")
-        print("\n3. Linha 9 Esmeralda")
-        print("\n4. Voltar")
+        opcao = input("Escolha sua opção (1-4): ")
 
-        opcao2 = input("Escolha sua opção: ")
-
-        if opcao2 ==  '1' :
-            print("Linha 4 Amarela funciona das 04h40 AM até as 00h.")
-        elif opcao2 == '2' :
-            print("Linha 8 diamante funciona das 04h00 AM até as 00h.") 
-        elif opcao2 == '3' :
-            print("Linha 9 Esmeralda funciona 04h00 AM até as 00h.")
-        elif opcao2 == '4' :
-            voltar ()
+        if opcao == '1':
+            print("Linha 4 Amarela funciona das 04h40 até as 00h.")
+        elif opcao == '2':
+            print("Linha 8 Diamante funciona das 04h00 até as 00h.")
+        elif opcao == '3':
+            print("Linha 9 Esmeralda funciona das 04h00 até as 00h.")
+        elif opcao == '4':
+            voltar()
             break
-        else :
-            print("Opção inválida. Por favor escolha uma opção disponível.")
-
+        else:
+            print("Opção inválida. Por favor, escolha uma opção disponível.")
+        
         input("Pressione enter para voltar ao menu principal.")
-
-def voltar() :
-        input("Pressione enter para voltar ao menu.")
 
 # Função para exibir status das linhas
 def funcionalidade_3():
-    print("\nVocê escolheu a funcionalidade 3")
+    print("\nVocê escolheu ver o status de funcionamento das linhas.")
+    
+    while True: 
+        print("\n------- Status de Funcionamento -------")
+        print("1. Linha 4 Amarela")
+        print("2. Linha 8 Diamante")
+        print("3. Linha 9 Esmeralda")
+        print("4. Voltar")
 
-    while True : 
-        print("\n-------Funcionamento-------")
-        print("\n1. Linha 4 Amarela")
-        print("\n2. Linha 8 Diamante")
-        print("\n3. Linha 9 Esmeralda")
-        print("\n4. Voltar")
+        opcao = input("Escolha sua opção (1-4): ")
 
-        opcao2 = input("Escolha sua opção: ")
-
-        if opcao2 ==  '1' :
-            print("Linha 4 Amarela funcionando normalmente.")
-        elif opcao2 == '2' :
-            print("Linha 8 Diamante funcionando normalmente.") 
-        elif opcao2 == '3' :
-            print("Linha 9 Esmeralda funcionando normalmente.")
-        elif opcao2 == '4' :
-            voltar ()
+        if opcao == '1':
+            print("Linha 4 Amarela está funcionando normalmente.")
+        elif opcao == '2':
+            print("Linha 8 Diamante está funcionando normalmente.")
+        elif opcao == '3':
+            print("Linha 9 Esmeralda está funcionando normalmente.")
+        elif opcao == '4':
+            voltar()
             break
-        else :
-            print("Opção inválida. Por favor escolha uma opção disponível.")
-
+        else:
+            print("Opção inválida. Por favor, escolha uma opção disponível.")
+        
         input("Pressione enter para voltar ao menu principal.")
-
-def voltar() :
-        input("Pressione enter para voltar ao menu.")
 
 # Menu principal
 def menu():
@@ -141,6 +148,3 @@ def menu():
 # Executar o programa
 if __name__ == "__main__":
     menu()
-
-    def sair() :
-        print("Você escolheu sair.")
