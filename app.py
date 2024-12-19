@@ -1,4 +1,5 @@
 import random
+import os
 
 # Função para coletar os dados dos horários e número de pessoas
 def coletar_dados():
@@ -201,3 +202,4 @@ def menu():
 # Executar o programa
 if __name__ == "__main__":
     menu()
+    os.system('clear')
