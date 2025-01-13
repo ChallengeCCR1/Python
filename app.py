@@ -1,6 +1,8 @@
 import random
 import os
 
+print("Hello World")
+
 # Função para coletar os dados dos horários e número de pessoas
 def coletar_dados():
     """
