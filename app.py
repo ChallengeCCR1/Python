@@ -1,6 +1,15 @@
 import random
 import os
 
+'''
+ideias de melhoria no projeto
+-> colocar as informações em gráficos, em como está as estações, etc
+-> conseguir dados ao vivo sobre as estações, pesquisar sobre isso
+-> talvez automatizar algo com pyautogui
+-> um chat interativo com flet (talvez)
+-> por enquanto é isso, mas a ver melhorias, se são viáveis também
+'''
+
 print("Hello World")
 
 # Função para coletar os dados dos horários e número de pessoas
@@ -93,7 +102,7 @@ def gerar_dados_aleatorios():
     return horarios, pessoas_entraram
 
 # Função para analisar o horário de pico
-def funcionalidade_1():
+def analisar_pico():
     """
     Funcionalidade para analisar horários de pico.
     """
@@ -114,7 +123,7 @@ def voltar():
     """
     input("\nPressione enter para voltar ao menu.")
 
-def funcionalidade_2():
+def comparar_linhas():
     """
     Funcionalidade para comparar horários de funcionamento de linhas.
     """
@@ -146,7 +155,7 @@ def funcionalidade_2():
     voltar()
 
 # Função para exibir status das linhas
-def funcionalidade_3():
+def status_de_funcionamento():
     """
     Funcionalidade para mostrar o status de funcionamento das linhas.
     """
@@ -181,6 +190,8 @@ def menu():
     Menu principal do programa.
     """
     while True:
+        ## è interessante usar o ljust para deixar os dados ajustados,
+        ## tanto no menu quanto nas funcionalidades
         print("\n-------MENU PRINCIPAL-------")
         print("1. Analisar horários de pico")
         print("2. Comparar duas linhas")
@@ -190,11 +201,11 @@ def menu():
         opcao = input("Escolha sua opção: ")
         
         if opcao == '1':
-            funcionalidade_1()
+            analisar_pico()
         elif opcao == '2':
-            funcionalidade_2()
+            comparar_linhas()
         elif opcao == '3':
-            funcionalidade_3()
+            status_de_funcionamento()
         elif opcao == '4':
             print("Saindo do programa...")
             break
@@ -204,4 +215,4 @@ def menu():
 # Executar o programa
 if __name__ == "__main__":
     menu()
-    os.system('clear')
+    ## os.system('clear')
