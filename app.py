@@ -1,218 +1,139 @@
+import time
 import random
 import os
 
-'''
-ideias de melhoria no projeto
--> colocar as informações em gráficos, em como está as estações, etc
--> conseguir dados ao vivo sobre as estações, pesquisar sobre isso
--> talvez automatizar algo com pyautogui
--> um chat interativo com flet (talvez)
--> por enquanto é isso, mas a ver melhorias, se são viáveis também
-'''
+# def limpar tela
+def limpar_tela():
+    os.system('cls')
 
-print("Hello World")
+# Banco de dados simulado
+usuarios = {}
+viagens = []
+avisos = [
+    "Linha 8 Diamante com atrasos de 10 minutos.",
+    "Linha 9 Esmeralda operando normalmente.",
+    "Linha 4 Amarela com grande fluxo de passageiros neste momento."
+]
 
-# Função para coletar os dados dos horários e número de pessoas
-def coletar_dados():
-    """
-    Coleta horários e números de pessoas que entraram nesses horários.
-    Permite entrada manual ou aleatória.
-    """
-    horarios = []
-    pessoas_entraram = []
-    
-    print("\nVocê quer inserir os dados manualmente ou gerar automaticamente?")
-    print("1. Inserir manualmente")
-    print("2. Gerar automaticamente")
-    
-    opcao = input("Escolha sua opção (1-2): ")
-    if opcao == '2':
-        horarios, pessoas_entraram = gerar_dados_aleatorios()
-        print("\nDados gerados automaticamente com sucesso!")
-    else:
-        while True:
-            horario = input("Digite o horário (formato HH:MM) ou 'sair' para terminar: ")
-            if horario.lower() == 'sair':
-                break
-            if not validar_horario(horario):
-                print("Formato de horário inválido. Por favor, use HH:MM.")
-                continue
-            try:
-                pessoas = int(input(f"Quantas pessoas entraram às {horario}? "))
-                horarios.append(horario)
-                pessoas_entraram.append(pessoas)
-            except ValueError:
-                print("Por favor, insira um número válido de pessoas.")
-    
-    return horarios, pessoas_entraram
+# Login/Cadastro
+def cadastrar_usuario():
+    print("\n===== Cadastro =====")
+    usuario = input("Digite um nome de usuário: ")
+    if usuario in usuarios:
+        print("Usuário já cadastrado!")
+        return None
+    senha = input("Digite uma senha: ")
+    usuarios[usuario] = senha
+    print("Cadastro realizado com sucesso!")
 
-# Função para validar o formato do horário
-def validar_horario(horario):
-    """
-    Valida se o horário está no formato HH:MM e é válido.
-    """
-    if len(horario) != 5 or horario[2] != ':':
-        return False
-    partes = horario.split(':')
-    try:
-        horas = int(partes[0])
-        minutos = int(partes[1])
-        return 0 <= horas < 24 and 0 <= minutos < 60
-    except ValueError:
-        return False
-
-# Função para encontrar o horário de pico
-def encontrar_pico(horarios, pessoas_entraram):
-    """
-    Encontra o horário com o maior número de pessoas.
-    """
-    maior_numero = max(pessoas_entraram)
-    indice_do_pico = pessoas_entraram.index(maior_numero)
-    horario_de_pico = horarios[indice_do_pico]
-    return horario_de_pico, maior_numero
-
-# Função para calcular a média de pessoas por horário
-def calcular_media(pessoas_entraram):
-    """
-    Calcula a média de pessoas por horário.
-    """
-    total_pessoas = sum(pessoas_entraram)
-    return total_pessoas / len(pessoas_entraram) if pessoas_entraram else 0
-
-# Função para exibir os dados de maneira organizada
-def exibir_resultados(horarios, pessoas_entraram, horario_de_pico, maior_numero, media_pessoas):
-    """
-    Exibe os resultados calculados de maneira organizada.
-    """
-    print("\n=== Resultados ===")
-    print("\nHorários e pessoas:")
-    for i in range(len(horarios)):
-        print(f" - Às {horarios[i]}, {pessoas_entraram[i]} pessoas.")
-    
-    print(f"\nO horário de pico foi {horario_de_pico}, com {maior_numero} pessoas.")
-    print(f"A média de pessoas por horário foi {media_pessoas:.2f}.")
-
-# Função para gerar dados aleatórios (opcional)
-def gerar_dados_aleatorios():
-    """
-    Gera horários e números de pessoas aleatórios para teste.
-    """
-    horarios = [f"{h:02}:{m:02}" for h in range(6, 23) for m in [0, 30]]
-    pessoas_entraram = [random.randint(0, 100) for _ in horarios]
-    return horarios, pessoas_entraram
-
-# Função para analisar o horário de pico
-def analisar_pico():
-    """
-    Funcionalidade para analisar horários de pico.
-    """
-    print("\nVocê escolheu a análise de horários de pico!")
-    horarios, pessoas_entraram = coletar_dados()
-    
-    if not horarios:
-        print("Nenhum dado foi inserido!")
-        return
-
-    horario_de_pico, maior_numero = encontrar_pico(horarios, pessoas_entraram)
-    media_pessoas = calcular_media(pessoas_entraram)
-    exibir_resultados(horarios, pessoas_entraram, horario_de_pico, maior_numero, media_pessoas)
-
-def voltar():
-    """
-    Função para pausar e voltar ao menu.
-    """
-    input("\nPressione enter para voltar ao menu.")
-
-def comparar_linhas():
-    """
-    Funcionalidade para comparar horários de funcionamento de linhas.
-    """
-    print("\n\nEscolha duas linhas para comparar:")
-    linhas = {
-        '1': ("Linha 4 Amarela", "04h40 até 00h"),
-        '2': ("Linha 8 Diamante", "04h00 até 00h"),
-        '3': ("Linha 9 Esmeralda", "04h00 até 00h"),
-    }
-    
-    for chave, valor in linhas.items():
-        print(f"{chave}. {valor[0]}")
-    
-    escolha1 = input("Escolha a primeira linha: ")
-    escolha2 = input("Escolha a segunda linha: ")
-
-    if escolha1 == escolha2 or escolha1 not in linhas or escolha2 not in linhas:
-        print("Escolha inválida. Certifique-se de escolher duas linhas diferentes.")
-        return
-    
-    print("\nComparativo de Linhas:")
-    print("| Linha               | Horário de Funcionamento     |")
-    print("|---------------------|------------------------------|")
-    
-    for escolha in [escolha1, escolha2]:
-        linha_info = linhas[escolha]
-        print(f"| {linha_info[0]} | {linha_info[1]}")
-    
-    voltar()
-
-# Função para exibir status das linhas
-def status_de_funcionamento():
-    """
-    Funcionalidade para mostrar o status de funcionamento das linhas.
-    """
-    print("\nVocê escolheu ver o status de funcionamento das linhas.")
-    
-    while True: 
-        print("\n------- Status de Funcionamento -------")
-        print("1. Linha 4 Amarela")
-        print("2. Linha 8 Diamante")
-        print("3. Linha 9 Esmeralda")
-        print("4. Voltar")
-
-        opcao = input("Escolha sua opção (1-4): ")
-
-        if opcao == '1':
-            print("Linha 4 Amarela está funcionando normalmente.")
-        elif opcao == '2':
-            print("Linha 8 Diamante está com atrasos de 5 minutos.")
-        elif opcao == '3':
-            print("Linha 9 Esmeralda está com interrupção no trilho.")
-        elif opcao == '4':
-            voltar()
-            break
+# função de voltar ou sair
+def voltar_sair():
+    while True:
+        escolha = input("\nDigite 'V' para voltar ou 'S' para sair.").strip().lower()
+        if escolha == 'v':
+            return
+        elif escolha == 's':
+            print("Saindo do sistema...")
+            exit()
         else:
-            print("Opção inválida. Por favor, escolha uma opção disponível.")
-        
-        voltar()
+            print("Opção inválida. Tente novamente.")
+
+def fazer_login():
+    print("\n===== Login =====")
+    usuario = input("Usuário: ")
+    senha = input("Senha: ")
+    if usuarios.get(usuario) == senha:
+        print("Login realizado com sucesso!")
+        return usuario
+    print("Usuário ou senha incorretos!")
+    return None
+
+# Iniciar viagem
+def iniciar_viagem(usuario):
+    print("\n===== Iniciar Viagem =====")
+    origem = input("Digite a estação de origem: ")
+    destino = input("Digite a estação de destino: ")
+    hora_partida = time.strftime("%H:%M")
+    print("Viagem iniciada às", hora_partida)
+    time.sleep(2)  # Simula o tempo de viagem
+    hora_chegada = time.strftime("%H:%M")
+    print("Viagem concluída às", hora_chegada)
+    viagens.append({"usuario": usuario, "origem": origem, "destino": destino, "partida": hora_partida, "chegada": hora_chegada})
+
+    voltar_sair()
+    limpar_tela()
+
+# Relatório de viagens
+def exibir_relatorio(usuario):
+    print("\n===== Relatório de Viagens =====")
+    viagens_usuario = [v for v in viagens if v["usuario"] == usuario]
+    if not viagens_usuario:
+        print("Nenhuma viagem registrada.")
+        return
+    for i, v in enumerate(viagens_usuario, 1):
+        print(f"Viagem {i}: {v['origem']} -> {v['destino']} | Partida: {v['partida']} | Chegada: {v['chegada']}")
+
+    voltar_sair()
+    limpar_tela()
+
+# Previsão de pico
+def previsao_pico():
+    print("\n===== Previsão de Pico =====")
+    horarios = [f"{h:02}:00" for h in range(6, 23)]
+    fluxo = [random.randint(10, 300) for _ in horarios]
+    pico = max(fluxo)
+    horario_pico = horarios[fluxo.index(pico)]
+    print(f"Horário de maior fluxo: {horario_pico} com {pico} passageiros.")
+
+    voltar_sair()
+    limpar_tela()
+
+# Painel de avisos
+def painel_de_avisos():
+    print("\n===== Painel de Avisos =====")
+    for aviso in avisos:
+        print("-", aviso)
+
+    voltar_sair()
+    limpar_tela()
 
 # Menu principal
 def menu():
-    """
-    Menu principal do programa.
-    """
+    usuario = None
     while True:
-        ## è interessante usar o ljust para deixar os dados ajustados,
-        ## tanto no menu quanto nas funcionalidades
-        print("\n-------MENU PRINCIPAL-------")
-        print("1. Analisar horários de pico")
-        print("2. Comparar duas linhas")
-        print("3. Ver status de funcionamento das linhas")
-        print("4. Sair")
-        
-        opcao = input("Escolha sua opção: ")
+        print("\n===== Bem vindo ao sistema da Future Station =====")
+        print("1. Cadastrar Usuário")
+        print("2. Fazer Login")
+        print("3. Iniciar Viagem")
+        print("4. Relatório de Viagens")
+        print("5. Previsão de Pico")
+        print("6. Painel de Avisos")
+        print("7. Sair")
+        opcao = input("Escolha uma opção: ")
         
         if opcao == '1':
-            analisar_pico()
+            cadastrar_usuario()
         elif opcao == '2':
-            comparar_linhas()
+            usuario = fazer_login()
         elif opcao == '3':
-            status_de_funcionamento()
+            if usuario:
+                iniciar_viagem(usuario)
+            else:
+                print("Você precisa estar logado!")
         elif opcao == '4':
-            print("Saindo do programa...")
+            if usuario:
+                exibir_relatorio(usuario)
+            else:
+                print("Você precisa estar logado!")
+        elif opcao == '5':
+            previsao_pico()
+        elif opcao == '6':
+            painel_de_avisos()
+        elif opcao == '7':
+            print("Saindo...")
             break
         else:
-            print("Opção inválida! Tente novamente.")
+            print("Opção inválida!")
 
-# Executar o programa
 if __name__ == "__main__":
     menu()
-    ## os.system('clear')
