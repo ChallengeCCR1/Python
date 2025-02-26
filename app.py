@@ -10,9 +10,9 @@ def limpar_tela():
 usuarios = {}
 viagens = []
 avisos = [
-    "Linha 8 Diamante com atrasos de 10 minutos.",
-    "Linha 9 Esmeralda operando normalmente.",
-    "Linha 4 Amarela com grande fluxo de passageiros neste momento."
+    "Linha 8 Diamante com atrasos de 10 minutos.", #0
+    "Linha 9 Esmeralda operando normalmente.", #1
+    "Linha 4 Amarela com grande fluxo de passageiros neste momento." #2
 ]
 
 # Login/Cadastro
@@ -26,8 +26,8 @@ def cadastrar_usuario():
         senha = input("Digite uma senha: ")
         usuarios[usuario] = senha
         print("Cadastro realizado com sucesso!")
-    except:
-        print("Ocorreu um erro durante o cadastro.")
+    except Exception as e:
+        print(f"Ocorreu um erro durante o cadastro: {e}")
 
 # função de voltar ou sair
 def voltar_sair():
@@ -41,8 +41,8 @@ def voltar_sair():
                 exit()
             else:
                 print("Opção inválida. Tente novamente.")
-    except:
-        print("Ocorreu um erro.")
+    except Exception as e:
+        print(f"Ocorreu um erro: {e}")
 
 def fazer_login():
     try: 
@@ -53,8 +53,8 @@ def fazer_login():
             print("Login realizado com sucesso!")
             return usuario
         print("Usuário ou senha incorretos!")
-    except:
-        print("Ocorreu um erro ao fazer login.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao fazer login: {e}")
     return None
 
 # Iniciar viagem
@@ -72,8 +72,8 @@ def iniciar_viagem(usuario):
 
         voltar_sair()
         limpar_tela()
-    except:
-        print("Ocorreu um erro ao iniciar a viagem.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao iniciar a viagem. {e}")
 
 # Relatório de viagens
 def exibir_relatorio(usuario):
@@ -88,8 +88,8 @@ def exibir_relatorio(usuario):
 
         voltar_sair()
         limpar_tela()
-    except:
-        print("Ocorreu um erro ao exibir o relatório")
+    except Exception as e:
+        print(f"Ocorreu um erro ao exibir o relatório: {e}")
 
 # Previsão de pico
 def previsao_pico():
@@ -103,8 +103,8 @@ def previsao_pico():
 
         voltar_sair()
         limpar_tela()
-    except:
-        print("Ocorreu um erro ao prever o pico.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao prever o pico: {e}")
 
 # Painel de avisos
 def painel_de_avisos():
@@ -115,8 +115,8 @@ def painel_de_avisos():
 
         voltar_sair()
         limpar_tela()
-    except:
-        print("Erro ao exibir o painel de avisos.")
+    except Exception as e:
+        print(f"Erro ao exibir o painel de avisos: {e}")
 
 # Menu principal
 def menu():
@@ -156,8 +156,8 @@ def menu():
                 break
             else:
                 print("Opção inválida!")
-        except:
-            print("Ocorreu um erro inesperado no menu.")
+        except Exception as e:
+            print(f"Ocorreu um erro inesperado no menu: {e}")
 
 if __name__ == "__main__":
     menu()
