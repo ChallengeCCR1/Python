@@ -5,7 +5,7 @@ import os
 '''
 algumas ideias: previsao de pico -> usuario escolher qual a estação que quer saber a previsão de pico,
 melhorar menu -> se eu cadastrei um usuario, não tem porque aparecer para cadastrar de novo,
-inicar vigem -> o usuario poder iniciar e terminar a viagem quando quiser, e quando o usuario parar a viagem, ter o .sleep para fingir que esta gerando um resultado,
+iniciar viagem -> o usuario poder iniciar e terminar a viagem quando quiser, e quando o usuario parar a viagem, ter o .sleep para fingir que esta gerando um resultado,
 painel de avisos -> alguma forma de automatizar isso
 '''
 
@@ -75,10 +75,17 @@ def iniciar_viagem(usuario):
         origem = input("Digite a estação de origem: ")
         destino = input("Digite a estação de destino: ")
         hora_partida = time.strftime("%H:%M")
-        print("Viagem iniciada às", hora_partida)
-        time.sleep(2)  # Simula o tempo de viagem
+        print(f"Viagem iniciada às {hora_partida}, para finalizar a viagem, pressione Enter.")
+
+        input("Pressione Enter para encerrar a viagem.") # -> isso faz com que o sistema espere
+                                                         # a decisão do usuario, ficando mais realista
+
+        print("Finalizando a viagem...")
+        time.sleep(3)  # simula o tempo de processamento
+
         hora_chegada = time.strftime("%H:%M")
-        print("Viagem concluída às", hora_chegada)
+        print(f"Viagem concluída às {hora_chegada}")
+
         viagens.append({
             "usuario": usuario, 
             "origem": origem, 
@@ -89,6 +96,7 @@ def iniciar_viagem(usuario):
 
         voltar_sair()
         limpar_tela()
+
     except Exception as e:
         print(f"Ocorreu um erro ao iniciar a viagem. {e}")
 
