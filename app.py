@@ -75,7 +75,13 @@ def iniciar_viagem(usuario):
         time.sleep(2)  # Simula o tempo de viagem
         hora_chegada = time.strftime("%H:%M")
         print("Viagem concluída às", hora_chegada)
-        viagens.append({"usuario": usuario, "origem": origem, "destino": destino, "partida": hora_partida, "chegada": hora_chegada})
+        viagens.append({
+            "usuario": usuario, 
+            "origem": origem, 
+            "destino": destino, 
+            "partida": hora_partida, 
+            "chegada": hora_chegada
+        })
 
         voltar_sair()
         limpar_tela()
