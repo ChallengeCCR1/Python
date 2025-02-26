@@ -36,11 +36,13 @@ def cadastrar_usuario():
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
+    limpar_tela()
+
 # função de voltar ou sair
 def voltar_sair():
     try: 
         while True:
-            escolha = input("\nDigite 'V' para voltar ou 'S' para sair.").strip().lower()
+            escolha = input("\nDigite 'V' para voltar ou 'S' para sair: ").strip().lower()
             if escolha == 'v':
                 return
             elif escolha == 's':
@@ -62,8 +64,10 @@ def fazer_login():
         print("Usuário ou senha incorretos!")
     except Exception as e:
         print(f"Ocorreu um erro ao fazer login: {e}")
-    return None
 
+        limpar_tela()
+    return None
+    
 # Iniciar viagem
 def iniciar_viagem(usuario):
     try:
@@ -106,16 +110,15 @@ def exibir_relatorio(usuario):
 
 # Previsão de pico
 def previsao_pico():
-
     ## seria bacana o usuario definir qual a estação que ele quer saber o pico
-
     try:
         print("\n===== Previsão de Pico =====")
+        escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ")
         horarios = [f"{h:02}:00" for h in range(6, 23)]
         fluxo = [random.randint(10, 300) for _ in horarios]
         pico = max(fluxo)
         horario_pico = horarios[fluxo.index(pico)]
-        print(f"Horário de maior fluxo: {horario_pico} com {pico} passageiros.")
+        print(f"Horário de maior fluxo: {horario_pico} na estação {escolha_estacao} com {pico} passageiros.")
 
         voltar_sair()
         limpar_tela()
