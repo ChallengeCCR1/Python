@@ -2,6 +2,13 @@ import time
 import random
 import os
 
+'''
+algumas ideias: previsao de pico -> usuario escolher qual a estação que quer saber a previsão de pico,
+melhorar menu -> se eu cadastrei um usuario, não tem porque aparecer para cadastrar de novo,
+inicar vigem -> o usuario poder iniciar e terminar a viagem quando quiser, e quando o usuario parar a viagem, ter o .sleep para fingir que esta gerando um resultado,
+painel de avisos -> alguma forma de automatizar isso
+'''
+
 # def limpar tela
 def limpar_tela():
     os.system('cls')
@@ -93,6 +100,9 @@ def exibir_relatorio(usuario):
 
 # Previsão de pico
 def previsao_pico():
+
+    ## seria bacana o usuario definir qual a estação que ele quer saber o pico
+
     try:
         print("\n===== Previsão de Pico =====")
         horarios = [f"{h:02}:00" for h in range(6, 23)]
