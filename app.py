@@ -73,7 +73,7 @@ def iniciar_viagem(usuario):
         origem = input("Digite a estação de origem: ")
         destino = input("Digite a estação de destino: ")
         hora_partida = time.strftime("%H:%M")
-        print(f"Viagem iniciada às {hora_partida}, para finalizar a viagem, pressione Enter.")
+        print(f"Viagem de {usuario} iniciada às {hora_partida}, para finalizar a viagem, pressione Enter.")
 
         input("Pressione Enter para encerrar a viagem.") # -> isso faz com que o sistema espere
                                                          # a decisão do usuario, ficando mais realista
@@ -82,7 +82,7 @@ def iniciar_viagem(usuario):
         time.sleep(3)  # simula o tempo de processamento
 
         hora_chegada = time.strftime("%H:%M")
-        print(f"Viagem concluída às {hora_chegada}")
+        print(f"Viagem de {usuario} concluída às {hora_chegada}")
 
         viagens.append({
             "usuario": usuario, 
@@ -101,7 +101,7 @@ def iniciar_viagem(usuario):
 # Relatório de viagens
 def exibir_relatorio(usuario):
     try:
-        print("\n===== Relatório de Viagens =====")
+        print(f"\n===== Relatório de Viagens de {usuario} =====")
         viagens_usuario = [v for v in viagens if v["usuario"] == usuario]
         if not viagens_usuario:
             print("Nenhuma viagem registrada.")
@@ -158,11 +158,12 @@ def menu():
     usuario = None
     while True:
         try:
-            print("\n===== Bem vindo ao sistema da Future Station =====")
+            print(f"\nSeja bem vindo ao Sistema da Future Station, {usuario}!")
 
             if not usuarios:
                 print("1. Cadastrar Usuário")
-            print("2. Fazer Login")
+            if usuario is None:
+                print("2. Fazer Login")
             print("3. Iniciar Viagem")
             print("4. Relatório de Viagens")
             print("5. Previsão de Pico")
@@ -172,7 +173,7 @@ def menu():
             
             if opcao == '1' and not usuarios:
                 cadastrar_usuario()
-            elif opcao == '2':
+            elif opcao == '2' and usuario is None:
                 usuario = fazer_login()
             elif opcao == '3':
                 if usuario:
