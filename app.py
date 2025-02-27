@@ -3,10 +3,8 @@ import random
 import os
 
 '''
-algumas ideias: previsao de pico -> usuario escolher qual a estação que quer saber a previsão de pico,
-melhorar menu -> se eu cadastrei um usuario, não tem porque aparecer para cadastrar de novo,
-iniciar viagem -> o usuario poder iniciar e terminar a viagem quando quiser, e quando o usuario parar a viagem, ter o .sleep para fingir que esta gerando um resultado,
-painel de avisos -> alguma forma de automatizar isso
+1. melhorar menu -> se eu cadastrei um usuario, não tem porque aparecer para cadastrar de novo,
+2. painel de avisos -> alguma forma de automatizar isso
 '''
 
 # def limpar tela
@@ -17,9 +15,9 @@ def limpar_tela():
 usuarios = {}
 viagens = []
 avisos = [
-    "Linha 8 Diamante com atrasos de 10 minutos.", #0
-    "Linha 9 Esmeralda operando normalmente.", #1
-    "Linha 4 Amarela com grande fluxo de passageiros neste momento." #2
+    "Linha 4 Amarela com grande fluxo de passageiros neste momento.", #0
+    "Linha 8 Diamante com atrasos de 10 minutos.", #1
+    "Linha 9 Esmeralda operando normalmente."#2
 ]
 
 # Login/Cadastro
@@ -133,12 +131,22 @@ def previsao_pico():
     except Exception as e:
         print(f"Ocorreu um erro ao prever o pico: {e}")
 
-# Painel de avisos
-def painel_de_avisos():
+def centro_controle_operacional():
     try:
-        print("\n===== Painel de Avisos =====")
-        for aviso in avisos:
-            print("-", aviso)
+        print("\n===== Centro de Controle Operacional =====")
+        print("1. Linha 4 Amarela. ")
+        print("2. Linha 8 Diamante. ")
+        print("3. Linha 9 Esmeralda. ")
+        opcao_linha = input("Escolha uma opção: ")
+
+        if opcao_linha == "1":
+            print(avisos[0])
+        elif opcao_linha == "2":
+            print(avisos[1])
+        elif opcao_linha == "3":
+            print(avisos[2])
+        else:
+            print("Opção inválida")
 
         voltar_sair()
         limpar_tela()
@@ -151,16 +159,18 @@ def menu():
     while True:
         try:
             print("\n===== Bem vindo ao sistema da Future Station =====")
-            print("1. Cadastrar Usuário")
+
+            if not usuarios:
+                print("1. Cadastrar Usuário")
             print("2. Fazer Login")
             print("3. Iniciar Viagem")
             print("4. Relatório de Viagens")
             print("5. Previsão de Pico")
-            print("6. Painel de Avisos")
+            print("6. Centro de Controle Operacional")
             print("7. Sair")
             opcao = input("Escolha uma opção: ")
             
-            if opcao == '1':
+            if opcao == '1' and not usuarios:
                 cadastrar_usuario()
             elif opcao == '2':
                 usuario = fazer_login()
@@ -177,7 +187,7 @@ def menu():
             elif opcao == '5':
                 previsao_pico()
             elif opcao == '6':
-                painel_de_avisos()
+                centro_controle_operacional()
             elif opcao == '7':
                 print("Saindo...")
                 break
