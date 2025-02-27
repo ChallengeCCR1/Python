@@ -131,6 +131,34 @@ def previsao_pico():
     except Exception as e:
         print(f"Ocorreu um erro ao prever o pico: {e}")
 
+def informacoes_linha():
+    try:
+        print("\n===== Informações das Linhas =====")
+        print("1. Linha 9 Esmeralda")
+        print("2. Linha 4 Amarela (em breve)")
+        print("3. Linha 8 Diamante (em breve)")
+
+        opcao = input("Escolha uma linha para ver detalhes: ")
+
+        if opcao == "1":
+            exibir_mapa_linha9()
+        else:
+            print("Essa linha ainda não está disponível!")
+
+        voltar_sair()
+    except Exception as e:
+        print(f"Erro ao exibir as informações da linha: {e}")
+
+def exibir_mapa_linha9():
+    print("\n===== Mapa da Linha 9 Esmeralda =====")
+    estacoes = ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim",
+                "Vila Olímpia", "Berrini", "Morumbi", "Granja Julieta", "João Dias", "Santo Amaro",
+                "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]
+
+    print(" -> ".join(estacoes))
+    voltar_sair()
+
+
 def centro_controle_operacional():
     try:
         print("\n===== Centro de Controle Operacional =====")
@@ -153,49 +181,74 @@ def centro_controle_operacional():
     except Exception as e:
         print(f"Erro ao exibir o painel de avisos: {e}")
 
-# Menu principal
-def menu():
+# menu de cadastro/login
+def menu_inicial():
     usuario = None
-    while True:
+    while usuario is None:
         try:
-            print(f"\nSeja bem vindo ao Sistema da Future Station, {usuario}!")
+            print(f"\nSeja bem vindo ao Sistema da Future Station!")
 
             if not usuarios:
                 print("1. Cadastrar Usuário")
-            if usuario is None:
-                print("2. Fazer Login")
-            print("3. Iniciar Viagem")
-            print("4. Relatório de Viagens")
-            print("5. Previsão de Pico")
-            print("6. Centro de Controle Operacional")
-            print("7. Sair")
+            
+            print("2. Fazer Login")
+            print("3. Sair")
+
             opcao = input("Escolha uma opção: ")
+        
             
             if opcao == '1' and not usuarios:
                 cadastrar_usuario()
-            elif opcao == '2' and usuario is None:
+            elif opcao == '2':
                 usuario = fazer_login()
             elif opcao == '3':
-                if usuario:
-                    iniciar_viagem(usuario)
-                else:
-                    print("Você precisa estar logado!")
-            elif opcao == '4':
-                if usuario:
-                    exibir_relatorio(usuario)
-                else:
-                    print("Você precisa estar logado!")
-            elif opcao == '5':
-                previsao_pico()
-            elif opcao == '6':
-                centro_controle_operacional()
-            elif opcao == '7':
                 print("Saindo...")
-                break
+                exit()
             else:
                 print("Opção inválida!")
+            
         except Exception as e:
             print(f"Ocorreu um erro inesperado no menu: {e}")
 
+        limpar_tela()
+
+    return usuario
+
+## menu após login
+def menu_principal(usuario):
+    while True:
+        try:
+            print(f"Bem vindo, {usuario}!")
+            print("1. Informações da linha")
+            print("2. Relatório de viagens")
+            print("3. Previsão de pico")
+            print("4. Painel de avisos")
+            print("5. iniciar viagem")
+            print("6. logout")
+
+            opcao = input("Escolha uma opção: ")
+
+            if opcao == '1':
+                informacoes_linha()
+            elif opcao == '2':
+                exibir_relatorio(usuario)
+            elif opcao == '3':
+                previsao_pico()
+            elif opcao == '4':
+                centro_controle_operacional()
+            elif opcao == '5':
+                iniciar_viagem(usuario)
+            elif opcao == '6':
+                print(f"Poxa, {usuario}! Parece que escolheu sair...")
+                return
+            else:
+                print("Opção inválida!")
+
+        except Exception as e:
+            print(f"Ocorreu um erro iniesperado: {e}")
+
+        limpar_tela()
+
 if __name__ == "__main__":
-    menu()
+    usuario_logado = menu_inicial()
+    menu_principal(usuario_logado)
