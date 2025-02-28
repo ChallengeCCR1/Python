@@ -2,11 +2,6 @@ import time
 import random
 import os
 
-'''
-1. melhorar menu -> se eu cadastrei um usuario, não tem porque aparecer para cadastrar de novo,
-2. painel de avisos -> alguma forma de automatizar isso
-'''
-
 # def limpar tela
 def limpar_tela():
     os.system('cls')
@@ -116,7 +111,6 @@ def exibir_relatorio(usuario):
 
 # Previsão de pico
 def previsao_pico():
-    ## seria bacana o usuario definir qual a estação que ele quer saber o pico
     try:
         print("\n===== Previsão de Pico =====")
         escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ")
