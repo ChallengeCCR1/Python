@@ -1,19 +1,62 @@
 import time
 import random
 import os
+import json
 
 # def limpar tela
 def limpar_tela():
-    os.system('cls')
+    os.system('clear')
 
 # Banco de dados simulado
 usuarios = {}
+
 viagens = []
+
 avisos = [
     "Linha 4 Amarela com grande fluxo de passageiros neste momento.", #0
     "Linha 8 Diamante com atrasos de 10 minutos.", #1
     "Linha 9 Esmeralda operando normalmente."#2
 ]
+
+## def de salvar arquivos no json
+def salvar_viagens_json():
+    try:
+        with open('viagens.json', mode='w', encoding='utf-8') as arq:
+            json.dump(viagens, arq, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Ocorreu um erro ao salvar o arquivo: {e}")
+
+## def para carregar as viagens do json
+def carregar_viagens_json():
+    global viagens
+    try:
+        with open('viagens.json', mode='r', encoding='utf-8') as arq:
+            viagens = json.load(arq)
+    except FileNotFoundError:
+        viagens = []
+    except Exception as e:
+        print(f"Erro ao carregar viagen em JSON: {e}")
+        viagens = []
+
+## def salvar_usuarios_json
+def salvar_usuarios_json():
+    try:
+        with open('usuarios.json', mode='w', encoding='utf-8') as arq:
+            json.dump(usuarios, arq, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Ocorreu um erro ao salvar o arquivo: {e}")
+
+## def para carregar os usuarios
+def carregar_usuarios():
+    global usuarios
+    try:
+        with open('usuarios.json', mode='r', encoding='utf-8') as arq:
+            usuarios = json.load(arq)
+    except FileNotFoundError:
+        usuarios = {}
+    except Exception as e:
+        print(f"Ocorreu um erro ao carregar o arquivo:{e}")
+        usuarios = {}
 
 # Login/Cadastro
 def cadastrar_usuario():
@@ -21,11 +64,13 @@ def cadastrar_usuario():
         print("\n===== Cadastro =====")
         usuario = input("Digite um nome de usuário: ")
         if usuario in usuarios:
-            print("Usuário já cadastrado!")
-            return None
+            print("Usuário já cadastrado. Tente fazer login.")
+            return False
         senha = input("Digite uma senha: ")
         usuarios[usuario] = senha
+        salvar_usuarios_json()
         print("Cadastro realizado com sucesso!")
+        return True
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
@@ -87,11 +132,14 @@ def iniciar_viagem(usuario):
             "chegada": hora_chegada
         })
 
+        salvar_viagens_json()
+
         voltar_sair()
-        limpar_tela()
 
     except Exception as e:
         print(f"Ocorreu um erro ao iniciar a viagem. {e}")
+
+    limpar_tela()
 
 # Relatório de viagens
 def exibir_relatorio(usuario):
@@ -180,18 +228,14 @@ def menu_inicial():
     usuario = None
     while usuario is None:
         try:
-            print(f"\nSeja bem vindo ao Sistema da Future Station!")
-
-            if not usuarios:
-                print("1. Cadastrar Usuário")
-            
+            print(f"\nSeja bem-vindo ao Sistema da Future Station!")
+            print("1. Cadastrar Usuário")
             print("2. Fazer Login")
             print("3. Sair")
 
             opcao = input("Escolha uma opção: ")
         
-            
-            if opcao == '1' and not usuarios:
+            if opcao == '1':
                 cadastrar_usuario()
             elif opcao == '2':
                 usuario = fazer_login()
@@ -244,5 +288,7 @@ def menu_principal(usuario):
         limpar_tela()
 
 if __name__ == "__main__":
+    carregar_viagens_json()
+    carregar_usuarios()
     usuario_logado = menu_inicial()
     menu_principal(usuario_logado)
