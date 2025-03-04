@@ -258,10 +258,10 @@ def menu_principal(usuario):
         try:
             print(f"Bem vindo, {usuario}!")
             print("1. Informações da linha")
-            print("2. Relatório de viagens")
+            print("2. Iniciar viagem")
             print("3. Previsão de pico")
             print("4. Painel de avisos")
-            print("5. iniciar viagem")
+            print("5. Relatório de viagens")
             print("6. logout")
 
             opcao = input("Escolha uma opção: ")
@@ -269,13 +269,13 @@ def menu_principal(usuario):
             if opcao == '1':
                 informacoes_linha()
             elif opcao == '2':
-                exibir_relatorio(usuario)
+                iniciar_viagem(usuario)
             elif opcao == '3':
                 previsao_pico()
             elif opcao == '4':
                 centro_controle_operacional()
             elif opcao == '5':
-                iniciar_viagem(usuario)
+                exibir_relatorio(usuario)
             elif opcao == '6':
                 print(f"Poxa, {usuario}! Parece que escolheu sair...")
                 return
@@ -290,5 +290,6 @@ def menu_principal(usuario):
 if __name__ == "__main__":
     carregar_viagens_json()
     carregar_usuarios()
-    usuario_logado = menu_inicial()
-    menu_principal(usuario_logado)
+    while True:
+        usuario_logado = menu_inicial()
+        menu_principal(usuario_logado)
