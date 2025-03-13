@@ -3,28 +3,14 @@
         "usuario": "Pedro",
         "origem": "Carrão",
         "destino": "Vila Mariana",
-        "partida": "10:39",
-        "chegada": "10:39"
+        "partida": "15:23",
+        "chegada": "15:23"
     },
     {
-        "usuario": "Pedro",
-        "origem": "Pinheiros",
-        "destino": "Osasco",
-        "partida": "11:09",
-        "chegada": "11:09"
-    },
-    {
-        "usuario": "Samira",
+        "usuario": "Lucas",
         "origem": "Carrão",
-        "destino": "Vila Mariana",
-        "partida": "11:11",
-        "chegada": "11:12"
-    },
-    {
-        "usuario": "Pedro",
-        "origem": "Carrão",
-        "destino": "Vila Mariana",
-        "partida": "18:44",
-        "chegada": "18:44"
+        "destino": "Morumbi",
+        "partida": "15:46",
+        "chegada": "15:46"
     }
 ]

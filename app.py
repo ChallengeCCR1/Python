@@ -3,9 +3,16 @@ import random
 import os
 import json
 
+'''
+O que devedemos focar para a próxima sprint é:
+1. Integração com banco de dados;
+2. Deixar o sistema extremamente parecido com o banco de dados;
+3. Integrar com o front
+'''
+
 # def limpar tela
 def limpar_tela():
-    os.system('clear')
+    os.system('clear' if os.name == 'posix' else 'cls')
 
 # Banco de dados simulado
 usuarios = {}
@@ -65,6 +72,7 @@ def cadastrar_usuario():
             print("Usuário já cadastrado. Tente fazer login.")
             return False
         senha = input("Digite uma senha: ")
+
         usuarios[usuario] = senha
         salvar_usuarios_json()
         print("Cadastro realizado com sucesso!")
@@ -159,17 +167,51 @@ def exibir_relatorio(usuario):
 def previsao_pico():
     try:
         print("\n===== Previsão de Pico =====")
-        escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ")
-        horarios = [f"{h:02}:00" for h in range(6, 23)]
-        fluxo = [random.randint(10, 300) for _ in horarios]
-        pico = max(fluxo)
-        horario_pico = horarios[fluxo.index(pico)]
-        print(f"Horário de maior fluxo: {horario_pico} na estação {escolha_estacao} com {pico} passageiros.")
+        
+        # Dicionário de estações da CCR
+        ccr_estacoes = {
+            "Linha 4 Amarela": ["Butantã", "Pinheiros", "Faria Lima", "Paulista", "Consolação", "República", "Luz"],
+            "Linha 8 Diamante": ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim", "Vila Olímpia"],
+            "Linha 9 Esmeralda": ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim", 
+                                  "Vila Olímpia", "Berrini", "Morumbi", "Granja Julieta", "João Dias", "Santo Amaro", 
+                                  "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]
+        }
 
-        voltar_sair()
-        limpar_tela()
+        while True:
+            # Recebe a estação
+            escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ")
+
+            # Verifica se a estação pertence a alguma linha da CCR
+            estacao_encontrada = False
+            for linha, estacoes in ccr_estacoes.items():
+                if escolha_estacao in estacoes:
+                    estacao_encontrada = True
+                    break
+
+            if not estacao_encontrada:
+                print(f"A estação {escolha_estacao} não pertence a uma linha da CCR. Tente novamente.")
+                continue  # Retorna ao início da loop para tentar novamente
+
+            # Simulação de horários e fluxo
+            horarios = [f"{h:02}:00" for h in range(4, 23)]  # das 04:00 às 23:00
+            fluxo = [random.randint(300, 900) for i in horarios]  # número aleatório de passageiros
+            
+            pico = max(fluxo)
+            horario_pico = horarios[fluxo.index(pico)]
+
+            # Exibe o horário de pico e o fluxo
+            print(f"Horário de maior fluxo: {horario_pico} na estação {escolha_estacao} com {pico} passageiros.")
+            print("\nFluxo de passageiros por horário:")
+            for h, f in zip(horarios, fluxo):
+                print(f"{h}: {f} passageiros")
+
+            voltar_sair()
+            limpar_tela()
+            break  # Sai do loop após mostrar a previsão de pico
+    
     except Exception as e:
         print(f"Ocorreu um erro ao prever o pico: {e}")
+
 
 def informacoes_linha():
     try:
@@ -185,17 +227,26 @@ def informacoes_linha():
         else:
             print("Essa linha ainda não está disponível!")
 
-        voltar_sair()
+            voltar_sair()
     except Exception as e:
         print(f"Erro ao exibir as informações da linha: {e}")
 
 def exibir_mapa_linha9():
     print("\n===== Mapa da Linha 9 Esmeralda =====")
-    estacoes = ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim",
-                "Vila Olímpia", "Berrini", "Morumbi", "Granja Julieta", "João Dias", "Santo Amaro",
-                "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]
 
-    print(" -> ".join(estacoes))
+    # Definindo as estações em uma matriz
+    estacoes_matriz = [
+        ["Osasco", "Presidente Altino", "Ceasa"],  # Primeira parte da linha
+        ["Villa Lobos", "Pinheiros", "Cidade Jardim"],  # Segunda parte da linha
+        ["Vila Olímpia", "Berrini", "Morumbi"],  # Terceira parte da linha
+        ["Granja Julieta", "João Dias", "Santo Amaro"],  # Quarta parte da linha
+        ["Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]  # Última parte da linha
+    ]
+
+    # Imprimindo a matriz de estações de forma legível
+    for trecho in estacoes_matriz:
+        print(" -> ".join(trecho))
+
     voltar_sair()
 
 
