@@ -111,6 +111,26 @@ def fazer_login():
 
         limpar_tela()
     return None
+
+# tempo de viagem entre estações linha 9 esmeralda
+tempos_viagem = {
+    ("Osasco", "Presidente Altino") : 5,
+    ("Presidente Altino", "Ceasa") : 5,
+    ("Ceasa", "Vila Lobos") : 5,
+    ("Vila Lobos", "Pinheiros") : 5,
+    ("Pinheiros", "Cidade Jardim") : 5,
+    ("Cidade Jardim", "Vila Olimpia") : 5,
+    ("Vila Olimpia", "Berrini") : 5,
+    ("Berrini", "Morumbi") : 5,
+    ("Morumbi", "Granja Julieta") : 5,
+    ("Granja Julieta", "João Dias") : 5,
+    ("João Dias", "Santo Amaro") : 5,
+    ("Santo Amaro", "Socorro") : 5,
+    ("Socorro", "Jurubatuba") : 5,
+    ("Jurubatuba", "Autódromo") : 5,
+    ("Autódromo", "Interlargos") : 5,
+    ("Interlargos", "Grajaú") : 5,
+}
     
 # Iniciar viagem
 def iniciar_viagem(usuario):
@@ -118,6 +138,15 @@ def iniciar_viagem(usuario):
         print("\n===== Iniciar Viagem =====")
         origem = input("Digite a estação de origem: ")
         destino = input("Digite a estação de destino: ")
+
+        # obtendo o tempo de viagem
+        tempo = tempos_viagem.get((origem, destino)) or tempos_viagem.get((destino, origem))
+
+        if tempo is not None:
+            print(f"O tempo de viagem de {origem} para {destino} é de {tempo} minutos.")
+        else:
+            print("Desculpe, mas não tempos informações dessa rota.")
+
         hora_partida = time.strftime("%H:%M")
         print(f"Viagem de {usuario} iniciada às {hora_partida}, para finalizar a viagem, pressione Enter.")
 
