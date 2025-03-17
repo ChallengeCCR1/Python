@@ -40,7 +40,7 @@ def carregar_viagens_json():
     except FileNotFoundError:
         viagens = []
     except Exception as e:
-        print(f"Erro ao carregar viagen em JSON: {e}")
+        print(f"Erro ao carregar viagem em JSON: {e}")
         viagens = []
 
 ## def salvar_usuarios_json
@@ -152,7 +152,6 @@ def iniciar_viagem(usuario):
 
         input("Pressione Enter para encerrar a viagem.") # -> isso faz com que o sistema espere
                                                          # a decisão do usuario, ficando mais realista
-
         print("Finalizando a viagem...")
         time.sleep(3)  # simula o tempo de processamento
 
@@ -277,7 +276,6 @@ def exibir_mapa_linha9():
         print(" -> ".join(trecho))
 
     voltar_sair()
-
 
 def centro_controle_operacional():
     try:
