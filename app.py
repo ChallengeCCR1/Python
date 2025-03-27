@@ -1,7 +1,10 @@
+
+
 import time
 import random
 import os
 import json
+import matplotlib.pyplot as plt
 
 '''
 O que devedemos focar para a próxima sprint é:
@@ -131,47 +134,83 @@ tempos_viagem = {
     ("Autódromo", "Interlargos") : 5,
     ("Interlargos", "Grajaú") : 5,
 }
+
+dados_estacao = {
+    "08:00": 150,
+    "09:00": 300,
+    "10:00": 500,
+    "11:00": 400,
+    "12:00": 100,
+    "13:00": 200,
+    "17:00": 500,
+    "18:00": 900
+}
     
-# Iniciar viagem
+def encontrar_horario_proximo(hora_partida):
+    """Encontra o horário mais próximo da hora_partida dentro dos horários disponíveis no dicionário."""
+    horarios_disponiveis = list(dados_estacao.keys())
+    horarios_disponiveis.sort()  # Garantir que os horários estão em ordem
+    for horario in reversed(horarios_disponiveis):
+        if hora_partida >= horario:
+            return horario
+    return horarios_disponiveis[0]
+
 def iniciar_viagem(usuario):
     try:
         print("\n===== Iniciar Viagem =====")
         origem = input("Digite a estação de origem: ")
         destino = input("Digite a estação de destino: ")
 
-        # obtendo o tempo de viagem
-        tempo = tempos_viagem.get((origem, destino)) or tempos_viagem.get((destino, origem))
-
-        if tempo is not None:
-            print(f"O tempo de viagem de {origem} para {destino} é de {tempo} minutos.")
-        else:
-            print("Desculpe, mas não tempos informações dessa rota.")
-
+        # Obter o horário atual e encontrar o horário mais próximo disponível
         hora_partida = time.strftime("%H:%M")
-        print(f"Viagem de {usuario} iniciada às {hora_partida}, para finalizar a viagem, pressione Enter.")
+        horario_proximo = encontrar_horario_proximo(hora_partida)
 
-        input("Pressione Enter para encerrar a viagem.") # -> isso faz com que o sistema espere
-                                                         # a decisão do usuario, ficando mais realista
+        print(f"Viagem de {usuario} iniciada às {hora_partida} (Referência: {horario_proximo})")
+
+        # Verificar se há dados de fluxo de pessoas no horário mais próximo
+        if horario_proximo in dados_estacao:
+            pessoas = dados_estacao[horario_proximo]
+
+            # Gerar o gráfico
+            horarios = list(dados_estacao.keys())
+            quantidade_pessoas = list(dados_estacao.values())
+
+            plt.bar(horarios, quantidade_pessoas, color='blue')
+            plt.xlabel('Horários')
+            plt.ylabel('Quantidade de Pessoas')
+            plt.title(f'Fluxo de Pessoas na Estação {origem} - Horário: {horario_proximo}')
+            plt.show()
+
+            # Alerta gráfico
+            if pessoas > 400:
+                print(f"⚠️ Alerta! A estação {origem} está muito cheia nesse horário.")
+            elif pessoas > 200:
+                print(f"⚠️ Atenção! A estação {origem} está cheia nesse horário.")
+            else:
+                print(f"✅ A estação {origem} não está muito cheia nesse horário.")
+        else:
+            print(f"ℹ️ Não temos dados para a estação {origem} nesse horário.")
+
+        input("Pressione Enter para encerrar a viagem.")
         print("Finalizando a viagem...")
-        time.sleep(3)  # simula o tempo de processamento
+        time.sleep(3)  
 
         hora_chegada = time.strftime("%H:%M")
-        print(f"Viagem de {usuario} concluída às {hora_chegada}")
+        print(f"Viagem de {usuario} concluída às {hora_chegada}, de {origem} para {destino}")
 
-        viagens.append({
-            "usuario": usuario, 
-            "origem": origem, 
-            "destino": destino, 
-            "partida": hora_partida, 
+        # Adicionando a viagem antes de salvar
+        viagem = {
+            "usuario": usuario,
+            "origem": origem,
+            "destino": destino,
+            "partida": hora_partida,
             "chegada": hora_chegada
-        })
-
+        }
+        viagens.append(viagem)
         salvar_viagens_json()
 
-        voltar_sair()
-
     except Exception as e:
-        print(f"Ocorreu um erro ao iniciar a viagem. {e}")
+        print(f"Erro ao iniciar a viagem: {e}")
 
     limpar_tela()
 
@@ -179,17 +218,31 @@ def iniciar_viagem(usuario):
 def exibir_relatorio(usuario):
     try:
         print(f"\n===== Relatório de Viagens de {usuario} =====")
-        viagens_usuario = [v for v in viagens if v["usuario"] == usuario]
-        if not viagens_usuario:
-            print("Nenhuma viagem registrada.")
+        
+        # Verifica se a lista de viagens foi corretamente registrada
+        if not viagens:
+            print("Nenhuma viagem registrada até o momento.")
+            input("\nPressione Enter para voltar ao menu...")  # Pausa para o usuário ler
+            voltar_sair()  # Voltar ao menu
             return
-        for i, v in enumerate(viagens_usuario, 1):
-            print(f"Viagem {i}: {v['origem']} -> {v['destino']} | Partida: {v['partida']} | Chegada: {v['chegada']}")
 
-        voltar_sair()
-        limpar_tela()
+        viagens_usuario = [v for v in viagens if v["usuario"] == usuario]
+        
+        if not viagens_usuario:
+            print("Nenhuma viagem registrada para este usuário.")
+            input("\nPressione Enter para voltar ao menu...")  # Pausa para o usuário ler
+        else:
+            for i, v in enumerate(viagens_usuario, 1):
+                print(f"\n🚆 Viagem {i}")
+                print(f"   📍 Origem: {v['origem']}")
+                print(f"   🎯 Destino: {v['destino']}")
+                print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
+
+        input("\nPressione Enter para voltar ao menu...")  # Adiciona pausa antes de sair
+        limpar_tela()  # Garante que o usuário possa escolher voltar ou sair antes de limpar a tela
+
     except Exception as e:
-        print(f"Ocorreu um erro ao exibir o relatório: {e}")
+        print(f"❌ Erro ao exibir o relatório: {e}")
 
 # Previsão de pico
 def previsao_pico():
