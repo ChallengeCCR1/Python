@@ -1,5 +1,3 @@
-
-
 import time
 import random
 import os
@@ -78,12 +76,32 @@ def cadastrar_usuario():
 
         usuarios[usuario] = senha
         salvar_usuarios_json()
-        print("Cadastro realizado com sucesso!")
+        print("Cadastro realizado com sucesso! Você agora pode fazer login.")
+        input("Pressione 'Enter' para continuar...")
+        limpar_tela()
         return True
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
-    limpar_tela()
+        limpar_tela()
+
+## função de fazer login na plataforma
+def fazer_login():
+    try: 
+        print("\n===== Login =====")
+        usuario = input("Usuário: ")
+        senha = input("Senha: ")
+        if usuarios.get(usuario) == senha:
+            print("Login realizado com sucesso! Aproveite a nossa plataforma!")
+            input("Pressione 'Enter' para continuar...")
+            limpar_tela()
+            return usuario
+        print("Usuário ou senha incorretos!")
+        input("Pressione 'Enter' para tentar novamente..." )
+    except Exception as e:
+        print(f"Ocorreu um erro ao fazer login: {e}")
+        limpar_tela()
+    return None
 
 # função de voltar ou sair
 def voltar_sair():
@@ -99,21 +117,6 @@ def voltar_sair():
                 print("Opção inválida. Tente novamente.")
     except Exception as e:
         print(f"Ocorreu um erro: {e}")
-
-def fazer_login():
-    try: 
-        print("\n===== Login =====")
-        usuario = input("Usuário: ")
-        senha = input("Senha: ")
-        if usuarios.get(usuario) == senha:
-            print("Login realizado com sucesso!")
-            return usuario
-        print("Usuário ou senha incorretos!")
-    except Exception as e:
-        print(f"Ocorreu um erro ao fazer login: {e}")
-
-        limpar_tela()
-    return None
 
 # tempo de viagem entre estações linha 9 esmeralda
 tempos_viagem = {
@@ -294,7 +297,7 @@ def previsao_pico():
         print(f"Ocorreu um erro ao prever o pico: {e}")
 
 
-def informacoes_linha():
+def mapa_linha():
     try:
         print("\n===== Informações das Linhas =====")
         print("1. Linha 9 Esmeralda")
@@ -396,7 +399,7 @@ def menu_principal(usuario):
             opcao = input("Escolha uma opção: ")
 
             if opcao == '1':
-                informacoes_linha()
+                mapa_linha()
             elif opcao == '2':
                 iniciar_viagem(usuario)
             elif opcao == '3':

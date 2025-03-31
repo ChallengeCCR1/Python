@@ -96,5 +96,40 @@
         "destino": "Pinheiros",
         "partida": "18:15",
         "chegada": "18:15"
+    },
+    {
+        "usuario": "Samira",
+        "origem": "Vila Mariana",
+        "destino": "Santa Cecilia",
+        "partida": "16:23",
+        "chegada": "16:23"
+    },
+    {
+        "usuario": "Sulamita",
+        "origem": "Pinheiros",
+        "destino": "Morumbi",
+        "partida": "07:41",
+        "chegada": "07:41"
+    },
+    {
+        "usuario": "Pedro",
+        "origem": "Osasco",
+        "destino": "Presidente Altino",
+        "partida": "07:46",
+        "chegada": "07:46"
+    },
+    {
+        "usuario": "Pedro",
+        "origem": "Carrão",
+        "destino": "VIla Matilde",
+        "partida": "07:47",
+        "chegada": "07:47"
+    },
+    {
+        "usuario": "Pedro",
+        "origem": "Pinheiros",
+        "destino": "Butantã",
+        "partida": "07:56",
+        "chegada": "07:56"
     }
 ]
