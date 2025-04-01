@@ -1,14 +1,16 @@
 import time
-import random
 import os
 import json
 import matplotlib.pyplot as plt
+import pandas as pd
 
 '''
 O que devedemos focar para a próxima sprint é:
 1. Integração com banco de dados;
 2. Deixar o sistema extremamente parecido com o banco de dados;
-3. Integrar com o front
+3. Integrar com o front;
+4. consumir uma API externa -> se formos usar uma API para dados da CPTM, devemos mudar
+a estrutura do sistema, ja que informações sobre linhas que não pertencem a CCR serão desconsideradas.
 '''
 
 # def limpar tela
@@ -78,12 +80,12 @@ def cadastrar_usuario():
         salvar_usuarios_json()
         print("Cadastro realizado com sucesso! Você agora pode fazer login.")
         input("Pressione 'Enter' para continuar...")
-        limpar_tela()
+        #limpar_tela()()
         return True
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
-        limpar_tela()
+        #limpar_tela()()
 
 ## função de fazer login na plataforma
 def fazer_login():
@@ -94,13 +96,13 @@ def fazer_login():
         if usuarios.get(usuario) == senha:
             print("Login realizado com sucesso! Aproveite a nossa plataforma!")
             input("Pressione 'Enter' para continuar...")
-            limpar_tela()
+            #limpar_tela()()
             return usuario
         print("Usuário ou senha incorretos!")
         input("Pressione 'Enter' para tentar novamente..." )
     except Exception as e:
         print(f"Ocorreu um erro ao fazer login: {e}")
-        limpar_tela()
+        #limpar_tela()()
     return None
 
 # função de voltar ou sair
@@ -145,8 +147,15 @@ dados_estacao = {
     "11:00": 400,
     "12:00": 100,
     "13:00": 200,
-    "17:00": 500,
-    "18:00": 900
+    "14:00": 500,
+    "15:00": 900,
+    "16:00": 900,
+    "17:00": 900,
+    "18:00": 900,
+    "19:00": 900,
+    "20:00": 900,
+    "21:00": 900,
+    "22:00": 900
 }
     
 def encontrar_horario_proximo(hora_partida):
@@ -173,16 +182,6 @@ def iniciar_viagem(usuario):
         # Verificar se há dados de fluxo de pessoas no horário mais próximo
         if horario_proximo in dados_estacao:
             pessoas = dados_estacao[horario_proximo]
-
-            # Gerar o gráfico
-            horarios = list(dados_estacao.keys())
-            quantidade_pessoas = list(dados_estacao.values())
-
-            plt.bar(horarios, quantidade_pessoas, color='blue')
-            plt.xlabel('Horários')
-            plt.ylabel('Quantidade de Pessoas')
-            plt.title(f'Fluxo de Pessoas na Estação {origem} - Horário: {horario_proximo}')
-            plt.show()
 
             # Alerta gráfico
             if pessoas > 400:
@@ -215,7 +214,8 @@ def iniciar_viagem(usuario):
     except Exception as e:
         print(f"Erro ao iniciar a viagem: {e}")
 
-    limpar_tela()
+    input("Digite 'enter' para voltar...")
+    #limpar_tela()()
 
 # Relatório de viagens
 def exibir_relatorio(usuario):
@@ -242,7 +242,7 @@ def exibir_relatorio(usuario):
                 print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
 
         input("\nPressione Enter para voltar ao menu...")  # Adiciona pausa antes de sair
-        limpar_tela()  # Garante que o usuário possa escolher voltar ou sair antes de limpar a tela
+        #limpar_tela()()  # Garante que o usuário possa escolher voltar ou sair antes de limpar a tela
 
     except Exception as e:
         print(f"❌ Erro ao exibir o relatório: {e}")
@@ -261,25 +261,37 @@ def previsao_pico():
                                   "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]
         }
 
+        # Carregar os dados do CSV
+        df = pd.read_csv("fluxo_passageiros.csv")
+        print("Dados carregados com sucesso.")  # Mensagem de depuração
+
         while True:
             # Recebe a estação
             escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ")
 
             # Verifica se a estação pertence a alguma linha da CCR
-            estacao_encontrada = False
-            for linha, estacoes in ccr_estacoes.items():
-                if escolha_estacao in estacoes:
-                    estacao_encontrada = True
-                    break
+            estacao_encontrada = any(escolha_estacao in estacoes for estacoes in ccr_estacoes.values())
+            print(f"Estação encontrada: {estacao_encontrada}")  # Mensagem de depuração
 
             if not estacao_encontrada:
                 print(f"A estação {escolha_estacao} não pertence a uma linha da CCR. Tente novamente.")
-                continue  # Retorna ao início da loop para tentar novamente
+                continue  # Retorna ao início do loop para tentar novamente
 
-            # Simulação de horários e fluxo
-            horarios = [f"{h:02}:00" for h in range(4, 23)]  # das 04:00 às 23:00
-            fluxo = [random.randint(300, 900) for i in horarios]  # número aleatório de passageiros
-            
+            # Filtrar os dados da estação escolhida
+            df_estacao = df[df["Estacao"] == escolha_estacao]
+
+            if df_estacao.empty:
+                print(f"Não há dados disponíveis para a estação {escolha_estacao}.")
+                continue
+
+            # Ordenar os dados pelo horário
+            df_estacao = df_estacao.sort_values(by="Horario")
+
+            # Extraindo horários e fluxos
+            horarios = df_estacao["Horario"].tolist()
+            fluxo = df_estacao["Passageiros"].tolist()
+
+            # Encontrar o horário de pico
             pico = max(fluxo)
             horario_pico = horarios[fluxo.index(pico)]
 
@@ -289,7 +301,27 @@ def previsao_pico():
             for h, f in zip(horarios, fluxo):
                 print(f"{h}: {f} passageiros")
 
-            voltar_sair()
+            # Gerar gráfico
+            plt.figure(figsize=(10, 5))
+            plt.bar(horarios, fluxo, color='blue', alpha=0.7)
+
+            # Melhorar a visualização do gráfico
+            plt.xlabel('Horários')
+            plt.ylabel('Quantidade de Passageiros')
+            plt.title(f'Fluxo de Passageiros na Estação {escolha_estacao}')
+            plt.xticks(rotation=45)
+            plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+            # Adicionando alerta visual
+            for i, f in enumerate(fluxo):
+                cor = 'green' if f < 1000 else 'yellow' if f < 1500 else 'red'
+                plt.bar(horarios[i], f, color=cor, alpha=0.9)
+
+            plt.tight_layout()  # Ajusta o layout para evitar sobreposição
+            plt.show()  # Exibe o gráfico
+
+            # Aqui você pode chamar suas funções de voltar ou limpar a tela, se necessário
+            voltar_sair()  # Chama a função para voltar ou sair
             limpar_tela()
             break  # Sai do loop após mostrar a previsão de pico
     
@@ -380,7 +412,7 @@ def menu_inicial():
         except Exception as e:
             print(f"Ocorreu um erro inesperado no menu: {e}")
 
-        limpar_tela()
+    limpar_tela()
 
     return usuario
 

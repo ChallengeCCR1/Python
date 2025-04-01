@@ -1,0 +1,461 @@
+Estacao,Horario,Passageiros
+Pinheiros,04:00,1374
+Pinheiros,05:00,880
+Pinheiros,06:00,4261
+Pinheiros,07:00,4161
+Pinheiros,08:00,4826
+Pinheiros,09:00,3003
+Pinheiros,10:00,911
+Pinheiros,11:00,730
+Pinheiros,12:00,1308
+Pinheiros,13:00,419
+Pinheiros,14:00,690
+Pinheiros,15:00,341
+Pinheiros,16:00,241
+Pinheiros,17:00,1897
+Pinheiros,18:00,3039
+Pinheiros,19:00,2974
+Pinheiros,20:00,1650
+Pinheiros,21:00,696
+Pinheiros,22:00,1108
+Pinheiros,23:00,275
+Butantã,04:00,532
+Butantã,05:00,749
+Butantã,06:00,4129
+Butantã,07:00,4760
+Butantã,08:00,3631
+Butantã,09:00,4012
+Butantã,10:00,792
+Butantã,11:00,735
+Butantã,12:00,719
+Butantã,13:00,208
+Butantã,14:00,647
+Butantã,15:00,244
+Butantã,16:00,1472
+Butantã,17:00,2861
+Butantã,18:00,4801
+Butantã,19:00,3891
+Butantã,20:00,2055
+Butantã,21:00,1185
+Butantã,22:00,1480
+Butantã,23:00,583
+Faria Lima,04:00,495
+Faria Lima,05:00,712
+Faria Lima,06:00,1562
+Faria Lima,07:00,3787
+Faria Lima,08:00,1961
+Faria Lima,09:00,2543
+Faria Lima,10:00,716
+Faria Lima,11:00,1475
+Faria Lima,12:00,1184
+Faria Lima,13:00,1405
+Faria Lima,14:00,378
+Faria Lima,15:00,968
+Faria Lima,16:00,1328
+Faria Lima,17:00,2752
+Faria Lima,18:00,2018
+Faria Lima,19:00,4753
+Faria Lima,20:00,3534
+Faria Lima,21:00,1050
+Faria Lima,22:00,731
+Faria Lima,23:00,1392
+Paulista,04:00,1359
+Paulista,05:00,798
+Paulista,06:00,2014
+Paulista,07:00,4839
+Paulista,08:00,1913
+Paulista,09:00,3944
+Paulista,10:00,277
+Paulista,11:00,630
+Paulista,12:00,1430
+Paulista,13:00,964
+Paulista,14:00,269
+Paulista,15:00,1113
+Paulista,16:00,670
+Paulista,17:00,3319
+Paulista,18:00,4049
+Paulista,19:00,1937
+Paulista,20:00,4446
+Paulista,21:00,658
+Paulista,22:00,1086
+Paulista,23:00,232
+Consolação,04:00,779
+Consolação,05:00,1374
+Consolação,06:00,3471
+Consolação,07:00,3546
+Consolação,08:00,3143
+Consolação,09:00,2231
+Consolação,10:00,539
+Consolação,11:00,1483
+Consolação,12:00,1279
+Consolação,13:00,914
+Consolação,14:00,884
+Consolação,15:00,485
+Consolação,16:00,1086
+Consolação,17:00,3251
+Consolação,18:00,3412
+Consolação,19:00,2123
+Consolação,20:00,4423
+Consolação,21:00,715
+Consolação,22:00,1421
+Consolação,23:00,969
+República,04:00,924
+República,05:00,1030
+República,06:00,2815
+República,07:00,2874
+República,08:00,3989
+República,09:00,4544
+República,10:00,592
+República,11:00,532
+República,12:00,946
+República,13:00,1355
+República,14:00,832
+República,15:00,1278
+República,16:00,326
+República,17:00,1787
+República,18:00,4502
+República,19:00,2633
+República,20:00,3535
+República,21:00,493
+República,22:00,1206
+República,23:00,723
+Luz,04:00,1405
+Luz,05:00,1267
+Luz,06:00,3695
+Luz,07:00,1797
+Luz,08:00,3976
+Luz,09:00,4823
+Luz,10:00,1399
+Luz,11:00,1091
+Luz,12:00,345
+Luz,13:00,1118
+Luz,14:00,360
+Luz,15:00,360
+Luz,16:00,376
+Luz,17:00,2801
+Luz,18:00,3661
+Luz,19:00,1834
+Luz,20:00,2727
+Luz,21:00,1394
+Luz,22:00,1177
+Luz,23:00,1173
+Osasco,04:00,318
+Osasco,05:00,865
+Osasco,06:00,2372
+Osasco,07:00,3986
+Osasco,08:00,4388
+Osasco,09:00,3305
+Osasco,10:00,525
+Osasco,11:00,1126
+Osasco,12:00,1243
+Osasco,13:00,531
+Osasco,14:00,564
+Osasco,15:00,1317
+Osasco,16:00,385
+Osasco,17:00,1878
+Osasco,18:00,3184
+Osasco,19:00,4433
+Osasco,20:00,4013
+Osasco,21:00,1173
+Osasco,22:00,526
+Osasco,23:00,1294
+Presidente Altino,04:00,798
+Presidente Altino,05:00,818
+Presidente Altino,06:00,1744
+Presidente Altino,07:00,3166
+Presidente Altino,08:00,3800
+Presidente Altino,09:00,2906
+Presidente Altino,10:00,276
+Presidente Altino,11:00,1292
+Presidente Altino,12:00,1187
+Presidente Altino,13:00,1496
+Presidente Altino,14:00,346
+Presidente Altino,15:00,1176
+Presidente Altino,16:00,691
+Presidente Altino,17:00,1696
+Presidente Altino,18:00,2814
+Presidente Altino,19:00,3138
+Presidente Altino,20:00,2927
+Presidente Altino,21:00,284
+Presidente Altino,22:00,1468
+Presidente Altino,23:00,314
+Ceasa,04:00,493
+Ceasa,05:00,1269
+Ceasa,06:00,3979
+Ceasa,07:00,3907
+Ceasa,08:00,3216
+Ceasa,09:00,3557
+Ceasa,10:00,1065
+Ceasa,11:00,1387
+Ceasa,12:00,874
+Ceasa,13:00,1287
+Ceasa,14:00,1322
+Ceasa,15:00,1041
+Ceasa,16:00,1355
+Ceasa,17:00,2334
+Ceasa,18:00,2863
+Ceasa,19:00,2214
+Ceasa,20:00,4395
+Ceasa,21:00,1327
+Ceasa,22:00,1030
+Ceasa,23:00,933
+Villa Lobos,04:00,689
+Villa Lobos,05:00,1344
+Villa Lobos,06:00,3365
+Villa Lobos,07:00,4391
+Villa Lobos,08:00,2715
+Villa Lobos,09:00,2350
+Villa Lobos,10:00,1111
+Villa Lobos,11:00,1404
+Villa Lobos,12:00,1247
+Villa Lobos,13:00,496
+Villa Lobos,14:00,1084
+Villa Lobos,15:00,1376
+Villa Lobos,16:00,1225
+Villa Lobos,17:00,3839
+Villa Lobos,18:00,3132
+Villa Lobos,19:00,3062
+Villa Lobos,20:00,1578
+Villa Lobos,21:00,1066
+Villa Lobos,22:00,1392
+Villa Lobos,23:00,868
+Cidade Jardim,04:00,1020
+Cidade Jardim,05:00,1032
+Cidade Jardim,06:00,4906
+Cidade Jardim,07:00,3172
+Cidade Jardim,08:00,4514
+Cidade Jardim,09:00,4467
+Cidade Jardim,10:00,619
+Cidade Jardim,11:00,1430
+Cidade Jardim,12:00,469
+Cidade Jardim,13:00,1168
+Cidade Jardim,14:00,1048
+Cidade Jardim,15:00,1466
+Cidade Jardim,16:00,1274
+Cidade Jardim,17:00,4378
+Cidade Jardim,18:00,1742
+Cidade Jardim,19:00,3903
+Cidade Jardim,20:00,2135
+Cidade Jardim,21:00,1382
+Cidade Jardim,22:00,861
+Cidade Jardim,23:00,1478
+Vila Olímpia,04:00,778
+Vila Olímpia,05:00,463
+Vila Olímpia,06:00,2812
+Vila Olímpia,07:00,1559
+Vila Olímpia,08:00,1897
+Vila Olímpia,09:00,4761
+Vila Olímpia,10:00,1359
+Vila Olímpia,11:00,295
+Vila Olímpia,12:00,1496
+Vila Olímpia,13:00,1447
+Vila Olímpia,14:00,979
+Vila Olímpia,15:00,960
+Vila Olímpia,16:00,1152
+Vila Olímpia,17:00,3330
+Vila Olímpia,18:00,4373
+Vila Olímpia,19:00,2010
+Vila Olímpia,20:00,1952
+Vila Olímpia,21:00,633
+Vila Olímpia,22:00,1397
+Vila Olímpia,23:00,618
+Berrini,04:00,1422
+Berrini,05:00,557
+Berrini,06:00,4237
+Berrini,07:00,1845
+Berrini,08:00,1598
+Berrini,09:00,4205
+Berrini,10:00,1362
+Berrini,11:00,999
+Berrini,12:00,1333
+Berrini,13:00,1441
+Berrini,14:00,414
+Berrini,15:00,1017
+Berrini,16:00,712
+Berrini,17:00,4055
+Berrini,18:00,3948
+Berrini,19:00,3497
+Berrini,20:00,2230
+Berrini,21:00,1162
+Berrini,22:00,305
+Berrini,23:00,743
+Morumbi,04:00,721
+Morumbi,05:00,599
+Morumbi,06:00,1842
+Morumbi,07:00,3359
+Morumbi,08:00,1834
+Morumbi,09:00,2314
+Morumbi,10:00,1160
+Morumbi,11:00,739
+Morumbi,12:00,1389
+Morumbi,13:00,459
+Morumbi,14:00,340
+Morumbi,15:00,1153
+Morumbi,16:00,817
+Morumbi,17:00,3178
+Morumbi,18:00,3265
+Morumbi,19:00,2283
+Morumbi,20:00,4075
+Morumbi,21:00,1151
+Morumbi,22:00,1373
+Morumbi,23:00,820
+Granja Julieta,04:00,271
+Granja Julieta,05:00,613
+Granja Julieta,06:00,2293
+Granja Julieta,07:00,2567
+Granja Julieta,08:00,4427
+Granja Julieta,09:00,4150
+Granja Julieta,10:00,1086
+Granja Julieta,11:00,743
+Granja Julieta,12:00,671
+Granja Julieta,13:00,247
+Granja Julieta,14:00,1465
+Granja Julieta,15:00,1172
+Granja Julieta,16:00,525
+Granja Julieta,17:00,3555
+Granja Julieta,18:00,3802
+Granja Julieta,19:00,4953
+Granja Julieta,20:00,2593
+Granja Julieta,21:00,628
+Granja Julieta,22:00,1474
+Granja Julieta,23:00,1355
+João Dias,04:00,648
+João Dias,05:00,1458
+João Dias,06:00,4679
+João Dias,07:00,4674
+João Dias,08:00,2363
+João Dias,09:00,3634
+João Dias,10:00,728
+João Dias,11:00,513
+João Dias,12:00,1304
+João Dias,13:00,241
+João Dias,14:00,815
+João Dias,15:00,784
+João Dias,16:00,1131
+João Dias,17:00,2351
+João Dias,18:00,4668
+João Dias,19:00,2354
+João Dias,20:00,4519
+João Dias,21:00,1253
+João Dias,22:00,1465
+João Dias,23:00,820
+Santo Amaro,04:00,343
+Santo Amaro,05:00,481
+Santo Amaro,06:00,2408
+Santo Amaro,07:00,3774
+Santo Amaro,08:00,3379
+Santo Amaro,09:00,1852
+Santo Amaro,10:00,794
+Santo Amaro,11:00,1195
+Santo Amaro,12:00,1014
+Santo Amaro,13:00,865
+Santo Amaro,14:00,217
+Santo Amaro,15:00,1037
+Santo Amaro,16:00,469
+Santo Amaro,17:00,1763
+Santo Amaro,18:00,2946
+Santo Amaro,19:00,3494
+Santo Amaro,20:00,1884
+Santo Amaro,21:00,857
+Santo Amaro,22:00,738
+Santo Amaro,23:00,382
+Socorro,04:00,407
+Socorro,05:00,373
+Socorro,06:00,3487
+Socorro,07:00,4791
+Socorro,08:00,3113
+Socorro,09:00,2771
+Socorro,10:00,1469
+Socorro,11:00,1106
+Socorro,12:00,1189
+Socorro,13:00,1292
+Socorro,14:00,1205
+Socorro,15:00,760
+Socorro,16:00,650
+Socorro,17:00,3569
+Socorro,18:00,4941
+Socorro,19:00,1831
+Socorro,20:00,1766
+Socorro,21:00,1171
+Socorro,22:00,791
+Socorro,23:00,866
+Jurubatuba,04:00,487
+Jurubatuba,05:00,615
+Jurubatuba,06:00,1757
+Jurubatuba,07:00,3730
+Jurubatuba,08:00,4375
+Jurubatuba,09:00,1653
+Jurubatuba,10:00,1487
+Jurubatuba,11:00,574
+Jurubatuba,12:00,347
+Jurubatuba,13:00,1283
+Jurubatuba,14:00,773
+Jurubatuba,15:00,383
+Jurubatuba,16:00,710
+Jurubatuba,17:00,2379
+Jurubatuba,18:00,4386
+Jurubatuba,19:00,3145
+Jurubatuba,20:00,4294
+Jurubatuba,21:00,1230
+Jurubatuba,22:00,1161
+Jurubatuba,23:00,1183
+Autódromo,04:00,1353
+Autódromo,05:00,708
+Autódromo,06:00,3423
+Autódromo,07:00,4607
+Autódromo,08:00,4881
+Autódromo,09:00,4679
+Autódromo,10:00,1077
+Autódromo,11:00,1490
+Autódromo,12:00,1106
+Autódromo,13:00,927
+Autódromo,14:00,1373
+Autódromo,15:00,230
+Autódromo,16:00,1357
+Autódromo,17:00,3914
+Autódromo,18:00,3179
+Autódromo,19:00,1742
+Autódromo,20:00,4606
+Autódromo,21:00,894
+Autódromo,22:00,1039
+Autódromo,23:00,488
+Interlagos,04:00,884
+Interlagos,05:00,913
+Interlagos,06:00,4568
+Interlagos,07:00,4274
+Interlagos,08:00,2738
+Interlagos,09:00,1515
+Interlagos,10:00,410
+Interlagos,11:00,329
+Interlagos,12:00,884
+Interlagos,13:00,1040
+Interlagos,14:00,1000
+Interlagos,15:00,933
+Interlagos,16:00,240
+Interlagos,17:00,1956
+Interlagos,18:00,1534
+Interlagos,19:00,2297
+Interlagos,20:00,2398
+Interlagos,21:00,959
+Interlagos,22:00,1228
+Interlagos,23:00,730
+Grajaú,04:00,1452
+Grajaú,05:00,1476
+Grajaú,06:00,3760
+Grajaú,07:00,2473
+Grajaú,08:00,2940
+Grajaú,09:00,2587
+Grajaú,10:00,1351
+Grajaú,11:00,331
+Grajaú,12:00,850
+Grajaú,13:00,1285
+Grajaú,14:00,1285
+Grajaú,15:00,400
+Grajaú,16:00,403
+Grajaú,17:00,2969
+Grajaú,18:00,1616
+Grajaú,19:00,4052
+Grajaú,20:00,2889
+Grajaú,21:00,1397
+Grajaú,22:00,920
+Grajaú,23:00,558
