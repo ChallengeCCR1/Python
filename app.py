@@ -11,6 +11,12 @@ O que devedemos focar para a próxima sprint é:
 3. Integrar com o front;
 4. consumir uma API externa -> se formos usar uma API para dados da CPTM, devemos mudar
 a estrutura do sistema, ja que informações sobre linhas que não pertencem a CCR serão desconsideradas.
+5. mexer no fluxo de interação entre painel de avisos, voltar pras opções de linhas, não pro menu principal
+6. mudar de 'informacoes linha' para 'mapa de linha'
+7. colocar relatório como opção 3
+8. na previsao de pico exibir o pico no terminal somente do horario que o usuario esta, e dar a opção tbm
+do usuario escolher um horario para saber o pico numa determinada estação
+9. colocar data na viagem
 '''
 
 # def limpar tela
