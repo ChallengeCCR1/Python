@@ -3,6 +3,7 @@ import os
 import json
 import matplotlib.pyplot as plt
 import pandas as pd
+from datetime import datetime
 
 '''
 O que devedemos focar para a próxima sprint é:
@@ -11,12 +12,12 @@ O que devedemos focar para a próxima sprint é:
 3. Integrar com o front;
 4. consumir uma API externa -> se formos usar uma API para dados da CPTM, devemos mudar
 a estrutura do sistema, ja que informações sobre linhas que não pertencem a CCR serão desconsideradas.
-5. mexer no fluxo de interação entre painel de avisos, voltar pras opções de linhas, não pro menu principal
-6. mudar de 'informacoes linha' para 'mapa de linha'
-7. colocar relatório como opção 3
 8. na previsao de pico exibir o pico no terminal somente do horario que o usuario esta, e dar a opção tbm
 do usuario escolher um horario para saber o pico numa determinada estação
 9. colocar data na viagem
+10. deixar o mapa mais bonito (talvez)
+11. AO iniciar viagem, só aparecer informações de pico em estações que são da CCR (puxar da base de dados talvez, n sei)
+12. colocar .lower(), .strip() em validacoes, cadastro e login por ex
 '''
 
 # def limpar tela
@@ -54,14 +55,15 @@ def carregar_viagens_json():
 
 ## def salvar_usuarios_json
 def salvar_usuarios_json():
+    """Salva os usuários no arquivo JSON."""
     try:
         with open('usuarios.json', mode='w', encoding='utf-8') as arq:
             json.dump(usuarios, arq, ensure_ascii=False, indent=4)
     except Exception as e:
         print(f"Ocorreu um erro ao salvar o arquivo: {e}")
 
-## def para carregar os usuarios
 def carregar_usuarios():
+    """Carrega os usuários do arquivo JSON."""
     global usuarios
     try:
         with open('usuarios.json', mode='r', encoding='utf-8') as arq:
@@ -69,46 +71,49 @@ def carregar_usuarios():
     except FileNotFoundError:
         usuarios = {}
     except Exception as e:
-        print(f"Ocorreu um erro ao carregar o arquivo:{e}")
+        print(f"Ocorreu um erro ao carregar o arquivo: {e}")
         usuarios = {}
 
-# Login/Cadastro
 def cadastrar_usuario():
+    """Cadastra um novo usuário."""
     try: 
         print("\n===== Cadastro =====")
-        usuario = input("Digite um nome de usuário: ")
+        usuario = input("Digite um nome de usuário: ").strip()
         if usuario in usuarios:
             print("Usuário já cadastrado. Tente fazer login.")
             return False
-        senha = input("Digite uma senha: ")
+        email = input("Digite seu e-mail: ").strip()
+        senha = input("Digite uma senha: ").strip()
 
-        usuarios[usuario] = senha
+        usuarios[usuario] = {"email": email, "senha": senha}
         salvar_usuarios_json()
         print("Cadastro realizado com sucesso! Você agora pode fazer login.")
         input("Pressione 'Enter' para continuar...")
-        #limpar_tela()()
         return True
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
-        #limpar_tela()()
-
-## função de fazer login na plataforma
 def fazer_login():
-    try: 
+    """Realiza o login de um usuário utilizando e-mail e senha."""
+    try:
         print("\n===== Login =====")
-        usuario = input("Usuário: ")
-        senha = input("Senha: ")
-        if usuarios.get(usuario) == senha:
-            print("Login realizado com sucesso! Aproveite a nossa plataforma!")
-            input("Pressione 'Enter' para continuar...")
-            #limpar_tela()()
-            return usuario
-        print("Usuário ou senha incorretos!")
-        input("Pressione 'Enter' para tentar novamente..." )
+        email_input = input("E-mail: ").strip()
+        senha_input = input("Senha: ").strip()
+        
+        for usuario, dados in usuarios.items():
+            if dados["email"] == email_input:
+                if dados["senha"] == senha_input:
+                    print("Login realizado com sucesso! Aproveite a nossa plataforma!")
+                    input("Pressione 'Enter' para continuar...")
+                    return usuario
+                else:
+                    print("Senha incorreta!")
+                    input("Pressione 'Enter' para tentar novamente...")
+                    return None
+        print("E-mail não encontrado!")
+        input("Pressione 'Enter' para tentar novamente...")
     except Exception as e:
         print(f"Ocorreu um erro ao fazer login: {e}")
-        #limpar_tela()()
     return None
 
 # função de voltar ou sair
@@ -146,73 +151,101 @@ tempos_viagem = {
     ("Interlargos", "Grajaú") : 5,
 }
 
+# estações linha 9 esmeralda
+estacoes = [
+    "Osasco", "Presidente Altino", "Ceasa", "Vila Lobos", "Pinheiros",
+    "Cidade Jardim", "Vila Olimpia", "Berrini", "Morumbi", "Granja Julieta",
+    "João Dias", "Santo Amaro", "Socorro", "Jurubatuba", "Autódromo",
+    "Interlagos", "Grajaú"
+]
+
+def calcular_tempo_total(origem, destino):
+    if origem not in estacoes or destino not in estacoes:
+        return None, "Estação inválida. Tente novamente!"
+    
+    idx_origem = estacoes.index(origem)
+    idx_destino = estacoes.index(destino)
+
+    if idx_origem > idx_destino:
+        idx_origem, idx_destino = idx_destino, idx_origem
+    
+    tempo_total = 0
+    for i in range(idx_origem, idx_destino):
+        tempo_total += tempos_viagem.get((estacoes[i], estacoes[i + 1]), 0)
+
+    return tempo_total, None
+
 dados_estacao = {
-    "08:00": 150,
-    "09:00": 300,
+    "08:00": 1200,
+    "09:00": 700,
     "10:00": 500,
     "11:00": 400,
-    "12:00": 100,
-    "13:00": 200,
-    "14:00": 500,
-    "15:00": 900,
-    "16:00": 900,
-    "17:00": 900,
-    "18:00": 900,
-    "19:00": 900,
-    "20:00": 900,
-    "21:00": 900,
-    "22:00": 900
+    "12:00": 670,
+    "13:00": 789,
+    "14:00": 600,
+    "15:00": 400,
+    "16:00": 560,
+    "17:00": 700,
+    "18:00": 980,
+    "19:00": 1240,
+    "20:00": 1300,
+    "21:00": 1000,
+    "22:00": 987,
+    "23:00": 654
 }
     
 def encontrar_horario_proximo(hora_partida):
     """Encontra o horário mais próximo da hora_partida dentro dos horários disponíveis no dicionário."""
     horarios_disponiveis = list(dados_estacao.keys())
-    horarios_disponiveis.sort()  # Garantir que os horários estão em ordem
+    horarios_disponiveis.sort() 
     for horario in reversed(horarios_disponiveis):
         if hora_partida >= horario:
             return horario
     return horarios_disponiveis[0]
 
 def iniciar_viagem(usuario):
+    """Inicia a simulação de uma viagem."""
     try:
         print("\n===== Iniciar Viagem =====")
-        origem = input("Digite a estação de origem: ")
-        destino = input("Digite a estação de destino: ")
+        origem = input("Digite a estação de origem: ").strip()
+        destino = input("Digite a estação de destino: ").strip()
 
-        # Obter o horário atual e encontrar o horário mais próximo disponível
-        hora_partida = time.strftime("%H:%M")
-        horario_proximo = encontrar_horario_proximo(hora_partida)
+        tempo_estimado, erro = calcular_tempo_total(origem, destino)
+        if erro:
+            print(erro)
+            return
 
-        print(f"Viagem de {usuario} iniciada às {hora_partida} (Referência: {horario_proximo})")
+        print(f"Tempo estimado de viagem de {origem} para {destino}: {tempo_estimado} minutos.")
 
-        # Verificar se há dados de fluxo de pessoas no horário mais próximo
-        if horario_proximo in dados_estacao:
-            pessoas = dados_estacao[horario_proximo]
+        confirmacao = input("Deseja iniciar a viagem? (s/n): ").strip().lower()
+        if confirmacao != 's':
+            print("Viagem cancelada.")
+            return
 
-            # Alerta gráfico
-            if pessoas > 400:
-                print(f"⚠️ Alerta! A estação {origem} está muito cheia nesse horário.")
-            elif pessoas > 200:
-                print(f"⚠️ Atenção! A estação {origem} está cheia nesse horário.")
-            else:
-                print(f"✅ A estação {origem} não está muito cheia nesse horário.")
-        else:
-            print(f"ℹ️ Não temos dados para a estação {origem} nesse horário.")
+        hora_partida = datetime.now()
+        print(f"Viagem iniciada às {hora_partida.strftime('%H:%M:%S')}.")
+        print("Aperte Enter para encerrar a viagem...")
 
-        input("Pressione Enter para encerrar a viagem.")
-        print("Finalizando a viagem...")
-        time.sleep(3)  
+        # Aguarda o usuário pressionar Enter para encerrar a viagem
+        input()
 
-        hora_chegada = time.strftime("%H:%M")
-        print(f"Viagem de {usuario} concluída às {hora_chegada}, de {origem} para {destino}")
+        print(f"Finalinado a sua viagem, {usuario}...")
+        time.sleep(3)
 
-        # Adicionando a viagem antes de salvar
+        hora_chegada = datetime.now()
+        tempo_real = (hora_chegada - hora_partida).total_seconds() / 60
+        print(f"Viagem concluída às {hora_chegada.strftime('%H:%M:%S')}.")
+        print(f"Tempo real decorrido: {tempo_real:.2f} minutos.")
+
+        # Registro da viagem
         viagem = {
             "usuario": usuario,
             "origem": origem,
             "destino": destino,
-            "partida": hora_partida,
-            "chegada": hora_chegada
+            "partida": hora_partida.strftime('%H:%M:%S'),
+            "chegada": hora_chegada.strftime('%H:%M:%S'),
+            "tempo_estimado": tempo_estimado,
+            "tempo_real": tempo_real
         }
         viagens.append(viagem)
         salvar_viagens_json()
@@ -220,8 +253,7 @@ def iniciar_viagem(usuario):
     except Exception as e:
         print(f"Erro ao iniciar a viagem: {e}")
 
-    input("Digite 'enter' para voltar...")
-    #limpar_tela()()
+    input("Pressione Enter para voltar...")
 
 # Relatório de viagens
 def exibir_relatorio(usuario):
@@ -247,8 +279,8 @@ def exibir_relatorio(usuario):
                 print(f"   🎯 Destino: {v['destino']}")
                 print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
 
-        input("\nPressione Enter para voltar ao menu...")  # Adiciona pausa antes de sair
-        #limpar_tela()()  # Garante que o usuário possa escolher voltar ou sair antes de limpar a tela
+        input("\nPressione Enter para voltar ao menu...")
+        limpar_tela()
 
     except Exception as e:
         print(f"❌ Erro ao exibir o relatório: {e}")
@@ -257,92 +289,86 @@ def exibir_relatorio(usuario):
 def previsao_pico():
     try:
         print("\n===== Previsão de Pico =====")
-        
+
         # Dicionário de estações da CCR
         ccr_estacoes = {
             "Linha 4 Amarela": ["Butantã", "Pinheiros", "Faria Lima", "Paulista", "Consolação", "República", "Luz"],
             "Linha 8 Diamante": ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim", "Vila Olímpia"],
-            "Linha 9 Esmeralda": ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim", 
-                                  "Vila Olímpia", "Berrini", "Morumbi", "Granja Julieta", "João Dias", "Santo Amaro", 
+            "Linha 9 Esmeralda": ["Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim",
+                                  "Vila Olímpia", "Berrini", "Morumbi", "Granja Julieta", "João Dias", "Santo Amaro",
                                   "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]
         }
 
         # Carregar os dados do CSV
         df = pd.read_csv("fluxo_passageiros.csv")
-        print("Dados carregados com sucesso.")  # Mensagem de depuração
 
         while True:
             # Recebe a estação
-            escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ")
+            escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ").strip()
 
             # Verifica se a estação pertence a alguma linha da CCR
             estacao_encontrada = any(escolha_estacao in estacoes for estacoes in ccr_estacoes.values())
-            print(f"Estação encontrada: {estacao_encontrada}")  # Mensagem de depuração
 
             if not estacao_encontrada:
                 print(f"A estação {escolha_estacao} não pertence a uma linha da CCR. Tente novamente.")
                 continue  # Retorna ao início do loop para tentar novamente
 
             # Filtrar os dados da estação escolhida
-            df_estacao = df[df["Estacao"] == escolha_estacao]
+            df_estacao = df[df["Estacao"] == escolha_estacao].copy()
 
             if df_estacao.empty:
                 print(f"Não há dados disponíveis para a estação {escolha_estacao}.")
                 continue
 
-            # Ordenar os dados pelo horário
-            df_estacao = df_estacao.sort_values(by="Horario")
+            # Converter a coluna "Horario" para objetos datetime.time
+            df_estacao["Horario"] = pd.to_datetime(df_estacao["Horario"], format='%H:%M').dt.time
 
-            # Extraindo horários e fluxos
-            horarios = df_estacao["Horario"].tolist()
-            fluxo = df_estacao["Passageiros"].tolist()
+            print("\nOpções:")
+            print("1. Ver o pico no horário atual")
+            print("2. Escolher um horário específico")
+            opcao = input("Escolha uma opção: ")
 
-            # Encontrar o horário de pico
-            pico = max(fluxo)
-            horario_pico = horarios[fluxo.index(pico)]
+            if opcao == "1":
+                horario_atual = datetime.now().time()
+                horario_mais_proximo = min(df_estacao["Horario"], key=lambda x: abs(datetime.combine(datetime.today(), x) - datetime.combine(datetime.today(), horario_atual)))
+                fluxo_passageiros = df_estacao[df_estacao["Horario"] == horario_mais_proximo]["Passageiros"].values[0]
 
-            # Exibe o horário de pico e o fluxo
-            print(f"Horário de maior fluxo: {horario_pico} na estação {escolha_estacao} com {pico} passageiros.")
-            print("\nFluxo de passageiros por horário:")
-            for h, f in zip(horarios, fluxo):
-                print(f"{h}: {f} passageiros")
+                print(f"No horário mais próximo ({horario_mais_proximo.strftime('%H:%M')}), a estação {escolha_estacao} tem {fluxo_passageiros} passageiros.")
 
-            # Gerar gráfico
-            plt.figure(figsize=(10, 5))
-            plt.bar(horarios, fluxo, color='blue', alpha=0.7)
+            elif opcao == "2":
+                horario_escolhido = input("Digite o horário no formato HH:MM: ").strip()
 
-            # Melhorar a visualização do gráfico
-            plt.xlabel('Horários')
-            plt.ylabel('Quantidade de Passageiros')
-            plt.title(f'Fluxo de Passageiros na Estação {escolha_estacao}')
-            plt.xticks(rotation=45)
-            plt.grid(axis='y', linestyle='--', alpha=0.7)
+                try:
+                    horario_escolhido = datetime.strptime(horario_escolhido, "%H:%M").time()
+                except ValueError:
+                    print("Formato de horário inválido. Tente novamente.")
+                    continue
 
-            # Adicionando alerta visual
-            for i, f in enumerate(fluxo):
-                cor = 'green' if f < 1000 else 'yellow' if f < 1500 else 'red'
-                plt.bar(horarios[i], f, color=cor, alpha=0.9)
+                if horario_escolhido not in df_estacao["Horario"].values:
+                    print(f"Não há registros para o horário {horario_escolhido.strftime('%H:%M')}.")
+                else:
+                    fluxo_passageiros = df_estacao[df_estacao["Horario"] == horario_escolhido]["Passageiros"].values[0]
+                    print(f"No horário {horario_escolhido.strftime('%H:%M')}, a estação {escolha_estacao} tem {fluxo_passageiros} passageiros.")
 
-            plt.tight_layout()  # Ajusta o layout para evitar sobreposição
-            plt.show()  # Exibe o gráfico
+            else:
+                print("Opção inválida. Retornando ao menu.")
+                continue
 
-            # Aqui você pode chamar suas funções de voltar ou limpar a tela, se necessário
-            voltar_sair()  # Chama a função para voltar ou sair
-            limpar_tela()
-            break  # Sai do loop após mostrar a previsão de pico
-    
+            input("\nPressione 'Enter' para voltar ao menu...")
+            break
+
     except Exception as e:
         print(f"Ocorreu um erro ao prever o pico: {e}")
 
 
 def mapa_linha():
     try:
-        print("\n===== Informações das Linhas =====")
+        print("\n===== Mapa =====")
         print("1. Linha 9 Esmeralda")
         print("2. Linha 4 Amarela (em breve)")
         print("3. Linha 8 Diamante (em breve)")
 
-        opcao = input("Escolha uma linha para ver detalhes: ")
+        opcao = input("Escolha uma linha para ver o mapa: ")
 
         if opcao == "1":
             exibir_mapa_linha9()
@@ -356,13 +382,13 @@ def mapa_linha():
 def exibir_mapa_linha9():
     print("\n===== Mapa da Linha 9 Esmeralda =====")
 
-    # Definindo as estações em uma matriz
+    
     estacoes_matriz = [
-        ["Osasco", "Presidente Altino", "Ceasa"],  # Primeira parte da linha
-        ["Villa Lobos", "Pinheiros", "Cidade Jardim"],  # Segunda parte da linha
-        ["Vila Olímpia", "Berrini", "Morumbi"],  # Terceira parte da linha
-        ["Granja Julieta", "João Dias", "Santo Amaro"],  # Quarta parte da linha
-        ["Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]  # Última parte da linha
+        ["Osasco", "Presidente Altino", "Ceasa"], 
+        ["Villa Lobos", "Pinheiros", "Cidade Jardim"], 
+        ["Vila Olímpia", "Berrini", "Morumbi"], 
+        ["Granja Julieta", "João Dias", "Santo Amaro"], 
+        ["Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"] 
     ]
 
     # Imprimindo a matriz de estações de forma legível
@@ -372,26 +398,32 @@ def exibir_mapa_linha9():
     voltar_sair()
 
 def centro_controle_operacional():
-    try:
-        print("\n===== Centro de Controle Operacional =====")
-        print("1. Linha 4 Amarela. ")
-        print("2. Linha 8 Diamante. ")
-        print("3. Linha 9 Esmeralda. ")
-        opcao_linha = input("Escolha uma opção: ")
+    while True:
+        try:
+            print("\n===== Centro de Controle Operacional =====")
+            print("1. Linha 4 Amarela. ")
+            print("2. Linha 8 Diamante. ")
+            print("3. Linha 9 Esmeralda. ")
+            print("4. Retornar ao menu principal. ")
+            opcao_linha = input("Escolha uma opção: ")
 
-        if opcao_linha == "1":
-            print(avisos[0])
-        elif opcao_linha == "2":
-            print(avisos[1])
-        elif opcao_linha == "3":
-            print(avisos[2])
-        else:
-            print("Opção inválida")
+            if opcao_linha == "1":
+                print(avisos[0])
+            elif opcao_linha == "2":
+                print(avisos[1])
+            elif opcao_linha == "3":
+                print(avisos[2])
+            elif opcao_linha == "4":
+                break
+            else:
+                print("Opção inválida. Por favor, escolha uma opção válida.")
+                continue
 
-        voltar_sair()
+            input("Pressione 'Enter' para retornar ao menu de opções...")
+            
+        except Exception as e:
+            print(f"Erro ao exibir o painel de avisos: {e}")
         limpar_tela()
-    except Exception as e:
-        print(f"Erro ao exibir o painel de avisos: {e}")
 
 # menu de cadastro/login
 def menu_inicial():
@@ -427,11 +459,11 @@ def menu_principal(usuario):
     while True:
         try:
             print(f"Bem vindo, {usuario}!")
-            print("1. Informações da linha")
+            print("1. Mapa")
             print("2. Iniciar viagem")
-            print("3. Previsão de pico")
+            print("3. Relatório de viagens")
             print("4. Painel de avisos")
-            print("5. Relatório de viagens")
+            print("5. Previsão de pico")
             print("6. logout")
 
             opcao = input("Escolha uma opção: ")
@@ -441,11 +473,11 @@ def menu_principal(usuario):
             elif opcao == '2':
                 iniciar_viagem(usuario)
             elif opcao == '3':
-                previsao_pico()
+                exibir_relatorio(usuario)
             elif opcao == '4':
                 centro_controle_operacional()
             elif opcao == '5':
-                exibir_relatorio(usuario)
+                previsao_pico()
             elif opcao == '6':
                 print(f"Poxa, {usuario}! Parece que escolheu sair...")
                 return
