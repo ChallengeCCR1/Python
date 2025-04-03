@@ -7,5 +7,14 @@
         "chegada": "08:33:21",
         "tempo_estimado": 20,
         "tempo_real": 0.14897853333333336
+    },
+    {
+        "usuario": "Pedro Sena",
+        "origem": "Grajaú",
+        "destino": "Osasco",
+        "partida": "08:35:17",
+        "chegada": "08:35:23",
+        "tempo_estimado": 70,
+        "tempo_real": 0.10433781666666667
     }
 ]

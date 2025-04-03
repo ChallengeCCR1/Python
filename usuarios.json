@@ -1,6 +1,14 @@
 {
-    "Pedro Sena": {
-        "email": "pedrosena628@gmail.com",
-        "senha": "200905"
+    "pedro": {
+        "email": "pedro@gmail.com",
+        "senha": "1234"
+    },
+    "antonio": {
+        "email": "antonio@gmail",
+        "senha": "12345"
+    },
+    "braufa": {
+        "email": "braufinha@hotmail.com",
+        "senha": "456"
     }
 }

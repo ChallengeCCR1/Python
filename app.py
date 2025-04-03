@@ -4,6 +4,8 @@ import json
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime
+import oracledb
+from conecction_oracle import obter_conexao
 
 '''
 O que devedemos focar para a próxima sprint é:
@@ -12,12 +14,11 @@ O que devedemos focar para a próxima sprint é:
 3. Integrar com o front;
 4. consumir uma API externa -> se formos usar uma API para dados da CPTM, devemos mudar
 a estrutura do sistema, ja que informações sobre linhas que não pertencem a CCR serão desconsideradas.
-8. na previsao de pico exibir o pico no terminal somente do horario que o usuario esta, e dar a opção tbm
-do usuario escolher um horario para saber o pico numa determinada estação
 9. colocar data na viagem
 10. deixar o mapa mais bonito (talvez)
-11. AO iniciar viagem, só aparecer informações de pico em estações que são da CCR (puxar da base de dados talvez, n sei)
-12. colocar .lower(), .strip() em validacoes, cadastro e login por ex
+11. update e delete
+12. duas consultas -> select where
+13. permitir exportar os dados dessas consultas para um arquivo json
 '''
 
 # def limpar tela
@@ -78,12 +79,13 @@ def cadastrar_usuario():
     """Cadastra um novo usuário."""
     try: 
         print("\n===== Cadastro =====")
-        usuario = input("Digite um nome de usuário: ").strip()
+        usuario = input("Digite um nome de usuário: ").strip().lower()
         if usuario in usuarios:
             print("Usuário já cadastrado. Tente fazer login.")
             return False
-        email = input("Digite seu e-mail: ").strip()
-        senha = input("Digite uma senha: ").strip()
+        email = input("Digite seu e-mail: ").strip().lower()
+        senha = input("Digite uma senha: ").strip().lower()
+        inserir_usuario(usuario, email, senha)
 
         usuarios[usuario] = {"email": email, "senha": senha}
         salvar_usuarios_json()
@@ -431,11 +433,11 @@ def menu_inicial():
     while usuario is None:
         try:
             print(f"\nSeja bem-vindo ao Sistema da Future Station!")
-            print("1. Cadastrar Usuário")
-            print("2. Fazer Login")
+            print("1. Cadastro")
+            print("2. Login")
             print("3. Sair")
 
-            opcao = input("Escolha uma opção: ")
+            opcao = input("Escolha uma opção: ").strip()
         
             if opcao == '1':
                 cadastrar_usuario()
@@ -488,6 +490,46 @@ def menu_principal(usuario):
             print(f"Ocorreu um erro iniesperado: {e}")
 
         limpar_tela()
+
+
+## conexao com banco de dados oracle
+import oracledb
+
+def inserir_usuario(usuario, email, senha):
+    conexao = obter_conexao()
+    if conexao is None:
+        print("Falha ao obter conexão com banco de dados.")
+        return
+    
+    try:
+        with conexao.cursor() as cursor:
+            email = email.lower()  # Normaliza o e-mail para evitar duplicatas com maiúsculas/minúsculas
+            
+            # Verifica se o e-mail já existe
+            cursor.execute("SELECT COUNT(*) FROM Usuario_Challenge WHERE LOWER(email) = :1", [email])
+            resultado = cursor.fetchone()
+            
+            if resultado[0] > 0:
+                print("Erro: o e-mail fornecido já está cadastrado.")
+                return
+            
+            # Insere o usuário no banco
+            sql = """
+                INSERT INTO Usuario_Challenge (id_usuario, nome, email, senha)
+                VALUES (gerador_id_chall.NEXTVAL, :1, :2, :3)
+            """
+            cursor.execute(sql, [usuario, email, senha])
+            conexao.commit()
+            print("Usuário inserido com sucesso!")
+
+    except oracledb.IntegrityError as e:
+        print(f"Erro de integridade: {e}")
+    except oracledb.DatabaseError as e:
+        print(f"Erro ao inserir usuário: {e}")
+    finally:
+        if conexao:
+            conexao.close()
+
 
 if __name__ == "__main__":
     carregar_viagens_json()
