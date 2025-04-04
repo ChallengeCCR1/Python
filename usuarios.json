@@ -2,5 +2,9 @@
     "SAMIRA": {
         "email": "samira@gmail.com",
         "senha": "1234"
+    },
+    "ROMEU": {
+        "email": "romeu@gmail.com",
+        "senha": "romeu2020"
     }
 }

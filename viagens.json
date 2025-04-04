@@ -18,5 +18,15 @@
         "tempo_estimado": 40,
         "tempo_real": 0.07263218333333334,
         "data": "04/04/2025"
+    },
+    {
+        "usuario": "ROMEU",
+        "origem": "Osasco",
+        "destino": "Morumbi",
+        "partida": "18:23:53",
+        "chegada": "18:24:09",
+        "tempo_estimado": 40,
+        "tempo_real": 0.2783492666666667,
+        "data": "04/04/2025"
     }
 ]
