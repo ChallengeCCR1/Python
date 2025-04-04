@@ -22,6 +22,9 @@ permitir exportar os dados dessas consultas para um arquivo json
 
 '''
 
+def exibir_nome_do_programa():
+    print("""𝗙𝘂𝘁𝘂𝗿𝗲 𝗦𝘁𝗮𝘁𝗶𝗼𝗻🚄""")
+
 # def limpar tela
 def limpar_tela():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -261,14 +264,16 @@ def iniciar_viagem(usuario):
         print("Aperte Enter para encerrar a viagem...")
         input()
 
+        hora_chegada_real = datetime.now();
+        tempo_real_decorrido = (hora_chegada_real - hora_partida).total_seconds() / 60
+        data_viagem = hora_partida.strftime("%d/%m/%Y")
+
         print(f"Finalizando a sua viagem, {usuario}...\n")
         time.sleep(3)
 
         # Simula a chegada com base no tempo estimado
-        hora_chegada = hora_partida + timedelta(minutes=tempo_estimado)
-        data_viagem = hora_partida.strftime("%d/%m/%Y")
-        print(f"🏁 Viagem concluída às {hora_chegada.strftime('%H:%M:%S')}.")
-        print(f"🕒 Tempo real decorrido: {tempo_estimado:.2f} minutos, na data de {data_viagem}.")
+        print(f"🏁 Viagem concluída às {hora_chegada_real.strftime('%H:%M:%S')}.")
+        print(f"🕒 Tempo real decorrido: {tempo_real_decorrido:.2f} minutos, na data de {data_viagem}.")
 
         # Registro da viagem
         viagem = {
@@ -276,10 +281,12 @@ def iniciar_viagem(usuario):
             "origem": origem,
             "destino": destino,
             "partida": hora_partida.strftime('%H:%M:%S'),
-            "chegada": hora_chegada.strftime('%H:%M:%S'),
+            "chegada": hora_chegada_real.strftime('%H:%M:%S'),
             "tempo_estimado": tempo_estimado,
-            "data": data_viagem
+            "tempo_real": tempo_real_decorrido,
+            "data": data_viagem 
         }
+
         viagens.append(viagem)
         salvar_viagens_json()
 
@@ -296,7 +303,7 @@ def iniciar_viagem(usuario):
             INSERT INTO VIAGEM (ID_VIAGEM, HPARTIDA, HCHEGADA, ESTACAO_ORIGEM, ESTACAO_DESTINO)
             VALUES (gerador_id_chall.NEXTVAL, :1, :2, :3, :4)
         """
-        cursor.execute(sql, [hora_partida, hora_chegada, id_origem, id_destino])
+        cursor.execute(sql, [hora_partida, hora_chegada_real, id_origem, id_destino])
         conexao.commit()
         print("✅ Viagem registrada com sucesso!\n")
 
@@ -315,7 +322,7 @@ def exibir_relatorio(usuario):
         if not viagens:
             print("Nenhuma viagem registrada até o momento.")
             input("\nPressione Enter para voltar ao menu...")
-            voltar_sair()  # Voltar ao menu
+            #voltar_sair()  # Voltar ao menu
             return
 
         viagens_usuario = [v for v in viagens if v["usuario"] == usuario]
@@ -329,6 +336,7 @@ def exibir_relatorio(usuario):
                 print(f"   📍 Origem: {v['origem']}")
                 print(f"   🎯 Destino: {v['destino']}")
                 print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
+                print(f"   🕒 Tempo de viagem: {v.get('tempo_real', 'Desconhecido')} minutos.")
                 print(f"   📅 Data: {v.get('data', 'Desconhecida')}")
 
         input("\nPressione Enter para voltar ao menu...")
@@ -354,29 +362,26 @@ def previsao_pico():
         df = pd.read_csv("fluxo_passageiros.csv")
 
         while True:
-            # Recebe a estação
             escolha_estacao = input("Informe a estação que deseja saber o pico de passageiros: ").strip()
 
-            # Verifica se a estação pertence a alguma linha da CCR
             estacao_encontrada = any(escolha_estacao in estacoes for estacoes in ccr_estacoes.values())
 
             if not estacao_encontrada:
                 print(f"A estação {escolha_estacao} não pertence a uma linha da CCR. Tente novamente.")
-                continue  # Retorna ao início do loop para tentar novamente
+                continue
 
-            # Filtrar os dados da estação escolhida
             df_estacao = df[df["Estacao"] == escolha_estacao].copy()
 
             if df_estacao.empty:
                 print(f"Não há dados disponíveis para a estação {escolha_estacao}.")
                 continue
 
-            # Converter a coluna "Horario" para objetos datetime.time
             df_estacao["Horario"] = pd.to_datetime(df_estacao["Horario"], format='%H:%M').dt.time
 
             print("\nOpções:")
             print("1. Ver o pico no horário atual")
             print("2. Escolher um horário específico")
+            print("3. Ver gráfico de fluxo de passageiros")
             opcao = input("Escolha uma opção: ")
 
             if opcao == "1":
@@ -401,6 +406,28 @@ def previsao_pico():
                     fluxo_passageiros = df_estacao[df_estacao["Horario"] == horario_escolhido]["Passageiros"].values[0]
                     print(f"No horário {horario_escolhido.strftime('%H:%M')}, a estação {escolha_estacao} tem {fluxo_passageiros} passageiros.")
 
+            elif opcao == "3":
+                # Converter para datetime completo e ordenar
+                df_estacao["Horario_dt"] = pd.to_datetime(df_estacao["Horario"].astype(str), format='%H:%M:%S')
+                df_estacao = df_estacao.sort_values(by="Horario_dt")
+
+                # Plotar gráfico
+                plt.figure(figsize=(10, 5))
+                plt.plot(df_estacao["Horario_dt"], df_estacao["Passageiros"], marker='o', linestyle='-', color='blue')
+                plt.title(f"Fluxo de Passageiros - Estação {escolha_estacao}")
+                plt.xlabel("Horário")
+                plt.ylabel("Número de Passageiros")
+                plt.xticks(rotation=45)
+                plt.grid(True)
+
+                # Destacar o pico
+                pico = df_estacao.loc[df_estacao["Passageiros"].idxmax()]
+                plt.axvline(pico["Horario_dt"], color='red', linestyle='--', label='Horário de Pico')
+                plt.legend()
+
+                plt.tight_layout()
+                plt.show()
+
             else:
                 print("Opção inválida. Retornando ao menu.")
                 continue
@@ -418,35 +445,50 @@ def mapa_linha():
         print("1. Linha 9 Esmeralda")
         print("2. Linha 4 Amarela (em breve)")
         print("3. Linha 8 Diamante (em breve)")
+        print("4. Retornar ao menu principal")
 
-        opcao = input("Escolha uma linha para ver o mapa: ")
+        opcao = input("\nEscolha uma linha para ver o mapa: ")
+
+        print("\n --------------------- ")
 
         if opcao == "1":
             exibir_mapa_linha9()
+        elif opcao == "4":
+            return
         else:
-            print("Essa linha ainda não está disponível!")
+            print("\nEssa linha ainda não está disponível!")
 
-            voltar_sair()
+            input("\nPressione 'Enter' para voltar ao menu das linhas.")
+            mapa_linha()
+
     except Exception as e:
         print(f"Erro ao exibir as informações da linha: {e}")
 
 def exibir_mapa_linha9():
-    print("\n===== Mapa da Linha 9 Esmeralda =====")
+    print("\n===== 🟩 Mapa da Linha 9 Esmeralda =====\n")
 
-    
-    estacoes_matriz = [
-        ["Osasco", "Presidente Altino", "Ceasa"], 
-        ["Villa Lobos", "Pinheiros", "Cidade Jardim"], 
-        ["Vila Olímpia", "Berrini", "Morumbi"], 
-        ["Granja Julieta", "João Dias", "Santo Amaro"], 
-        ["Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"] 
+    # Lista de estações da Linha 9
+    estacoes_linha9 = [
+        "Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim",
+        "Vila Olímpia", "Berrini", "Morumbi", "Granja Julieta", "João Dias", "Santo Amaro",
+        "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"
     ]
 
-    # Imprimindo a matriz de estações de forma legível
-    for trecho in estacoes_matriz:
-        print(" -> ".join(trecho))
+    # Destaques especiais
+    destaques = {
+        "Pinheiros": "⭐ Pinheiros",
+        "Santo Amaro": "🚆 Santo Amaro"
+    }
 
-    voltar_sair()
+    # Dividindo a linha em blocos para melhor visualização
+    blocos = [estacoes_linha9[i:i+5] for i in range(0, len(estacoes_linha9), 5)]
+
+    for bloco in blocos:
+        linha_formatada = "───".join([f"● {destaques.get(est, est)}" for est in bloco])
+        print(linha_formatada)
+
+    input("\n\nPressione 'Enter' para voltar ao menu das linhas.")
+    mapa_linha()
 
 def centro_controle_operacional():
     while True:
@@ -506,8 +548,9 @@ def menu_inicial():
 def menu_principal(usuario):
     while True:
         try:
+            exibir_nome_do_programa()
             
-            print(f"Bem vindo, {usuario}!")
+            print(f"\nBem vindo, {usuario}!")
             print("1. Mapa")
             print("2. Iniciar viagem")
             print("3. Relatório de viagens")

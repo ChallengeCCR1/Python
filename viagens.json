@@ -1,11 +1,22 @@
 [
     {
-        "usuario": "pedro",
+        "usuario": "SAMIRA",
+        "origem": "Osasco",
+        "destino": "Pinheiros",
+        "partida": "17:28:34",
+        "chegada": "17:28:43",
+        "tempo_estimado": 20,
+        "tempo_real": 0.15006768333333334,
+        "data": "04/04/2025"
+    },
+    {
+        "usuario": "SAMIRA",
         "origem": "Morumbi",
-        "destino": "Ceasa",
-        "partida": "16:29:58",
-        "chegada": "16:59:58",
-        "tempo_estimado": 30,
+        "destino": "Osasco",
+        "partida": "17:59:18",
+        "chegada": "17:59:23",
+        "tempo_estimado": 40,
+        "tempo_real": 0.07263218333333334,
         "data": "04/04/2025"
     }
 ]
