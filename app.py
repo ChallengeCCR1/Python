@@ -79,7 +79,7 @@ def cadastrar_usuario():
     """Cadastra um novo usuário."""
     try: 
         print("\n===== Cadastro =====")
-        usuario = input("Digite um nome de usuário: ").strip().lower()
+        usuario = input("Digite um nome de usuário: ").strip().lower();
         if usuario in usuarios:
             print("Usuário já cadastrado. Tente fazer login.")
             input("Pressione 'Enter' para continuar...")
@@ -162,22 +162,6 @@ estacoes_esmeralda = [
     "Interlagos", "Grajaú"
 ]
 
-def calcular_tempo_total(origem, destino):
-    if origem not in estacoes_esmeralda or destino not in estacoes_esmeralda:
-        return None, "Estação inválida. Tente novamente!"
-    
-    idx_origem = estacoes_esmeralda.index(origem)
-    idx_destino = estacoes_esmeralda.index(destino)
-
-    if idx_origem > idx_destino:
-        idx_origem, idx_destino = idx_destino, idx_origem
-    
-    tempo_total = 0
-    for i in range(idx_origem, idx_destino):
-        tempo_total += tempos_viagem.get((estacoes_esmeralda[i], estacoes_esmeralda[i + 1]), 0)
-
-    return tempo_total, None
-
 dados_estacao = {
     "08:00": 1200,
     "09:00": 700,
@@ -196,6 +180,30 @@ dados_estacao = {
     "22:00": 987,
     "23:00": 654
 }
+
+def obter_estacao_valida(mensagem):
+    """Solicita ao usuário uma estação e verifica se ela existe no banco."""
+    while True:
+        estacao = input(mensagem).strip()
+        if estacao in estacoes_esmeralda:
+            return estacao
+        print("❌ Estação inválida. Tente novamente!")
+
+def calcular_tempo_total(origem, destino):
+    """Calcula o tempo total da viagem entre duas estações."""
+    if origem not in estacoes_esmeralda or destino not in estacoes_esmeralda:
+        return None  # Agora retorna apenas o tempo, sem erro separado
+    
+    idx_origem = estacoes_esmeralda.index(origem)
+    idx_destino = estacoes_esmeralda.index(destino)
+
+    if idx_origem > idx_destino:
+        idx_origem, idx_destino = idx_destino, idx_origem
+    
+    return sum(
+        tempos_viagem.get((estacoes_esmeralda[i], estacoes_esmeralda[i + 1]), 0)
+        for i in range(idx_origem, idx_destino)
+    )
     
 def encontrar_horario_proximo(hora_partida):
     """Encontra o horário mais próximo da hora_partida dentro dos horários disponíveis no dicionário."""
@@ -206,22 +214,20 @@ def encontrar_horario_proximo(hora_partida):
             return horario
     return horarios_disponiveis[0]
 
-def obter_id_estacao(nome_estacao):
-    conexao = obter_conexao()
-    if conexao is None:
-        print("Falha ao obter conexão com banco de dados.")
-        return None
+def obter_estacao_valida(mensagem, cursor):
+    """Solicita ao usuário uma estação e verifica se ela existe no banco de dados."""
+    while True:
+        estacao = input(mensagem).strip()
+        cursor.execute("SELECT COUNT(*) FROM ESTACAO WHERE NOME = :1", [estacao])
+        if cursor.fetchone()[0] > 0:
+            return estacao
+        print("❌ Estação inválida. Tente novamente!")
 
-    try:
-        cursor = conexao.cursor()
-        cursor.execute("SELECT ID_ESTACAO FROM ESTACAO WHERE NOME = :1", [nome_estacao])
-        row = cursor.fetchone()
-        return row[0] if row else None
-    except oracledb.DatabaseError as e:
-        print(f"Erro ao buscar ID da estação {nome_estacao}: {e}")
-        return None
-    finally:
-        conexao.close()
+def obter_id_estacao(nome_estacao, cursor):
+    """Busca o ID da estação no banco de dados pelo nome."""
+    cursor.execute("SELECT ID_ESTACAO FROM ESTACAO WHERE NOME = :1", [nome_estacao])
+    row = cursor.fetchone()
+    return row[0] if row else None
 
 def iniciar_viagem(usuario):
     """Inicia a simulação de uma viagem e registra no banco de dados."""
@@ -234,12 +240,12 @@ def iniciar_viagem(usuario):
         cursor = conexao.cursor()
         
         print("\n===== Iniciar Viagem =====")
-        origem = input("Digite a estação de origem: ").strip()
-        destino = input("Digite a estação de destino: ").strip()
+        origem = obter_estacao_valida("Digite a estação de origem: ", cursor)
+        destino = obter_estacao_valida("Digite a estação de destino: ", cursor)
 
-        tempo_estimado, erro = calcular_tempo_total(origem, destino)
-        if erro:
-            print(erro)
+        tempo_estimado = calcular_tempo_total(origem, destino)
+        if tempo_estimado is None:
+            print("❌ Erro ao calcular o tempo de viagem.")
             return
 
         print(f"⏳ Tempo estimado de viagem de {origem} para {destino}: {tempo_estimado} minutos.")
@@ -274,11 +280,12 @@ def iniciar_viagem(usuario):
         viagens.append(viagem)
         salvar_viagens_json()
 
-        id_origem = obter_id_estacao(origem)
-        id_destino = obter_id_estacao(destino)
+        # Buscar IDs das estações
+        id_origem = obter_id_estacao(origem, cursor)
+        id_destino = obter_id_estacao(destino, cursor)
 
         if id_origem is None or id_destino is None:
-            print("Erro: Estação de origem ou destino não encontrada no banco de dados.")
+            print("❌ Erro: Estação de origem ou destino não encontrada no banco de dados.")
             return
 
         # Insere a viagem no banco
@@ -295,7 +302,6 @@ def iniciar_viagem(usuario):
     finally:
         if conexao:
             conexao.close()
-
 
 # Relatório de viagens
 def exibir_relatorio(usuario):
