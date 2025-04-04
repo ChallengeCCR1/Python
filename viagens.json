@@ -16,5 +16,14 @@
         "chegada": "08:35:23",
         "tempo_estimado": 70,
         "tempo_real": 0.10433781666666667
+    },
+    {
+        "usuario": "matheus henrique",
+        "origem": "Osasco",
+        "destino": "Pinheiros",
+        "partida": "07:48:57",
+        "chegada": "07:49:08",
+        "tempo_estimado": 20,
+        "tempo_real": 0.17082913333333333
     }
 ]

@@ -19,6 +19,7 @@ a estrutura do sistema, ja que informações sobre linhas que não pertencem a C
 11. update e delete
 12. duas consultas -> select where
 13. permitir exportar os dados dessas consultas para um arquivo json
+14. painel de avisos -> status operacional
 '''
 
 # def limpar tela
@@ -282,7 +283,7 @@ def exibir_relatorio(usuario):
                 print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
 
         input("\nPressione Enter para voltar ao menu...")
-        limpar_tela()
+        #limpar_tela()
 
     except Exception as e:
         print(f"❌ Erro ao exibir o relatório: {e}")
@@ -425,7 +426,7 @@ def centro_controle_operacional():
             
         except Exception as e:
             print(f"Erro ao exibir o painel de avisos: {e}")
-        limpar_tela()
+        #limpar_tela()
 
 # menu de cadastro/login
 def menu_inicial():
@@ -452,7 +453,7 @@ def menu_inicial():
         except Exception as e:
             print(f"Ocorreu um erro inesperado no menu: {e}")
 
-    limpar_tela()
+    #limpar_tela()
 
     return usuario
 
@@ -464,7 +465,7 @@ def menu_principal(usuario):
             print("1. Mapa")
             print("2. Iniciar viagem")
             print("3. Relatório de viagens")
-            print("4. Painel de avisos")
+            print("4. Status Operacional")
             print("5. Previsão de pico")
             print("6. logout")
 
@@ -489,7 +490,7 @@ def menu_principal(usuario):
         except Exception as e:
             print(f"Ocorreu um erro iniesperado: {e}")
 
-        limpar_tela()
+        #limpar_tela()
 
 
 ## conexao com banco de dados oracle
