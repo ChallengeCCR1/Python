@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import oracledb
 from conecction_oracle import obter_conexao
+import getpass
 
 '''
 O que devedemos focar para a próxima sprint é:
@@ -79,13 +80,13 @@ def cadastrar_usuario():
     """Cadastra um novo usuário."""
     try: 
         print("\n===== Cadastro =====")
-        usuario = input("Digite um nome de usuário: ").strip().lower();
+        usuario = input("Digite um nome de usuário: ").strip().upper()
         if usuario in usuarios:
             print("Usuário já cadastrado. Tente fazer login.")
             input("Pressione 'Enter' para continuar...")
             return False
         email = input("Digite seu e-mail: ").strip().lower()
-        senha = input("Digite uma senha: ").strip().lower()
+        senha = getpass.getpass("Digite uma senha: ")
         inserir_usuario(usuario, email, senha)
 
         usuarios[usuario] = {"email": email, "senha": senha}
@@ -100,12 +101,12 @@ def fazer_login():
     try:
         print("\n===== Login =====")
         email_input = input("E-mail: ").strip()
-        senha_input = input("Senha: ").strip()
+        senha_input = getpass.getpass("Senha: ")
         
         for usuario, dados in usuarios.items():
             if dados["email"] == email_input:
                 if dados["senha"] == senha_input:
-                    print("Login realizado com sucesso! Aproveite a nossa plataforma!")
+                    print(f"Login realizado com sucesso! Bem-vindo(a), {usuario.upper()}!")
                     input("Pressione 'Enter' para continuar...\n")
                     return usuario
                 else:
@@ -192,7 +193,7 @@ def obter_estacao_valida(mensagem):
 def calcular_tempo_total(origem, destino):
     """Calcula o tempo total da viagem entre duas estações."""
     if origem not in estacoes_esmeralda or destino not in estacoes_esmeralda:
-        return None  # Agora retorna apenas o tempo, sem erro separado
+        return None
     
     idx_origem = estacoes_esmeralda.index(origem)
     idx_destino = estacoes_esmeralda.index(destino)
@@ -250,9 +251,9 @@ def iniciar_viagem(usuario):
 
         print(f"⏳ Tempo estimado de viagem de {origem} para {destino}: {tempo_estimado} minutos.")
 
-        confirmacao = input("Deseja iniciar a viagem? (s/n): ").strip().lower()
+        confirmacao = input("Deseja iniciar a viagem? (s/n): \n").strip().lower()
         if confirmacao != 's':
-            print("Viagem cancelada.")
+            print("Viagem cancelada.\n")
             return
 
         hora_partida = datetime.now()
@@ -265,8 +266,9 @@ def iniciar_viagem(usuario):
 
         # Simula a chegada com base no tempo estimado
         hora_chegada = hora_partida + timedelta(minutes=tempo_estimado)
+        data_viagem = hora_partida.strftime("%d/%m/%Y")
         print(f"🏁 Viagem concluída às {hora_chegada.strftime('%H:%M:%S')}.")
-        print(f"🕒 Tempo real decorrido: {tempo_estimado:.2f} minutos.")
+        print(f"🕒 Tempo real decorrido: {tempo_estimado:.2f} minutos, na data de {data_viagem}.")
 
         # Registro da viagem
         viagem = {
@@ -275,7 +277,8 @@ def iniciar_viagem(usuario):
             "destino": destino,
             "partida": hora_partida.strftime('%H:%M:%S'),
             "chegada": hora_chegada.strftime('%H:%M:%S'),
-            "tempo_estimado": tempo_estimado
+            "tempo_estimado": tempo_estimado,
+            "data": data_viagem
         }
         viagens.append(viagem)
         salvar_viagens_json()
@@ -326,6 +329,7 @@ def exibir_relatorio(usuario):
                 print(f"   📍 Origem: {v['origem']}")
                 print(f"   🎯 Destino: {v['destino']}")
                 print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
+                print(f"   📅 Data: {v.get('data', 'Desconhecida')}")
 
         input("\nPressione Enter para voltar ao menu...")
 

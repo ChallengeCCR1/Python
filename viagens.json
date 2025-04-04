@@ -1,87 +1,11 @@
 [
     {
-        "usuario": "Pedro Sena",
-        "origem": "Pinheiros",
-        "destino": "Osasco",
-        "partida": "08:33:12",
-        "chegada": "08:33:21",
-        "tempo_estimado": 20,
-        "tempo_real": 0.14897853333333336
-    },
-    {
-        "usuario": "Pedro Sena",
-        "origem": "Grajaú",
-        "destino": "Osasco",
-        "partida": "08:35:17",
-        "chegada": "08:35:23",
-        "tempo_estimado": 70,
-        "tempo_real": 0.10433781666666667
-    },
-    {
-        "usuario": "matheus henrique",
-        "origem": "Osasco",
-        "destino": "Pinheiros",
-        "partida": "07:48:57",
-        "chegada": "07:49:08",
-        "tempo_estimado": 20,
-        "tempo_real": 0.17082913333333333
-    },
-    {
-        "usuario": "nelma",
-        "origem": "Pinheiros",
-        "destino": "Osasco",
-        "partida": "14:47:40",
-        "chegada": "14:47:47",
-        "tempo_estimado": 20,
-        "tempo_real": 0.1034153
-    },
-    {
-        "usuario": "nelma",
-        "origem": "Pinheiros",
-        "destino": "Osasco",
-        "partida": "14:48:58",
-        "chegada": "14:49:05",
-        "tempo_estimado": 20,
-        "tempo_real": 0.11341148333333333
-    },
-    {
-        "usuario": "nelma",
-        "origem": "Osasco",
-        "destino": "Pinheiros",
-        "partida": "15:24:12",
-        "chegada": "15:44:12",
-        "tempo_estimado": 20
-    },
-    {
-        "usuario": "pedro henrique sena",
-        "origem": "Pinheiros",
-        "destino": "Osasco",
-        "partida": "15:37:17",
-        "chegada": "15:57:17",
-        "tempo_estimado": 20
-    },
-    {
-        "usuario": "pedro henrique sena",
+        "usuario": "pedro",
         "origem": "Morumbi",
-        "destino": "Cidade Jardim",
-        "partida": "15:49:38",
-        "chegada": "16:04:38",
-        "tempo_estimado": 15
-    },
-    {
-        "usuario": "pedro henrique sena",
-        "origem": "Morumbi",
-        "destino": "Osasco",
-        "partida": "15:58:01",
-        "chegada": "16:38:01",
-        "tempo_estimado": 40
-    },
-    {
-        "usuario": "pedro henrique sena",
-        "origem": "Cidade Jardim",
         "destino": "Ceasa",
-        "partida": "16:06:51",
-        "chegada": "16:21:51",
-        "tempo_estimado": 15
+        "partida": "16:29:58",
+        "chegada": "16:59:58",
+        "tempo_estimado": 30,
+        "data": "04/04/2025"
     }
 ]
