@@ -3,7 +3,7 @@ import os
 import json
 import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import oracledb
 from conecction_oracle import obter_conexao
 
@@ -14,12 +14,11 @@ O que devedemos focar para a próxima sprint é:
 3. Integrar com o front;
 4. consumir uma API externa -> se formos usar uma API para dados da CPTM, devemos mudar
 a estrutura do sistema, ja que informações sobre linhas que não pertencem a CCR serão desconsideradas.
-9. colocar data na viagem
-10. deixar o mapa mais bonito (talvez)
-11. update e delete
-12. duas consultas -> select where
-13. permitir exportar os dados dessas consultas para um arquivo json
-14. painel de avisos -> status operacional
+
+update e delete
+duas consultas -> select where
+permitir exportar os dados dessas consultas para um arquivo json
+
 '''
 
 # def limpar tela
@@ -83,6 +82,7 @@ def cadastrar_usuario():
         usuario = input("Digite um nome de usuário: ").strip().lower()
         if usuario in usuarios:
             print("Usuário já cadastrado. Tente fazer login.")
+            input("Pressione 'Enter' para continuar...")
             return False
         email = input("Digite seu e-mail: ").strip().lower()
         senha = input("Digite uma senha: ").strip().lower()
@@ -92,7 +92,6 @@ def cadastrar_usuario():
         salvar_usuarios_json()
         print("Cadastro realizado com sucesso! Você agora pode fazer login.")
         input("Pressione 'Enter' para continuar...")
-        return True
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
@@ -107,16 +106,17 @@ def fazer_login():
             if dados["email"] == email_input:
                 if dados["senha"] == senha_input:
                     print("Login realizado com sucesso! Aproveite a nossa plataforma!")
-                    input("Pressione 'Enter' para continuar...")
+                    input("Pressione 'Enter' para continuar...\n")
                     return usuario
                 else:
                     print("Senha incorreta!")
-                    input("Pressione 'Enter' para tentar novamente...")
+                    input("Pressione 'Enter' para tentar novamente...\n")
                     return None
         print("E-mail não encontrado!")
-        input("Pressione 'Enter' para tentar novamente...")
+        input("Pressione 'Enter' para tentar novamente...\n")
     except Exception as e:
         print(f"Ocorreu um erro ao fazer login: {e}")
+    
     return None
 
 # função de voltar ou sair
@@ -155,7 +155,7 @@ tempos_viagem = {
 }
 
 # estações linha 9 esmeralda
-estacoes = [
+estacoes_esmeralda = [
     "Osasco", "Presidente Altino", "Ceasa", "Vila Lobos", "Pinheiros",
     "Cidade Jardim", "Vila Olimpia", "Berrini", "Morumbi", "Granja Julieta",
     "João Dias", "Santo Amaro", "Socorro", "Jurubatuba", "Autódromo",
@@ -163,18 +163,18 @@ estacoes = [
 ]
 
 def calcular_tempo_total(origem, destino):
-    if origem not in estacoes or destino not in estacoes:
+    if origem not in estacoes_esmeralda or destino not in estacoes_esmeralda:
         return None, "Estação inválida. Tente novamente!"
     
-    idx_origem = estacoes.index(origem)
-    idx_destino = estacoes.index(destino)
+    idx_origem = estacoes_esmeralda.index(origem)
+    idx_destino = estacoes_esmeralda.index(destino)
 
     if idx_origem > idx_destino:
         idx_origem, idx_destino = idx_destino, idx_origem
     
     tempo_total = 0
     for i in range(idx_origem, idx_destino):
-        tempo_total += tempos_viagem.get((estacoes[i], estacoes[i + 1]), 0)
+        tempo_total += tempos_viagem.get((estacoes_esmeralda[i], estacoes_esmeralda[i + 1]), 0)
 
     return tempo_total, None
 
@@ -206,9 +206,33 @@ def encontrar_horario_proximo(hora_partida):
             return horario
     return horarios_disponiveis[0]
 
-def iniciar_viagem(usuario):
-    """Inicia a simulação de uma viagem."""
+def obter_id_estacao(nome_estacao):
+    conexao = obter_conexao()
+    if conexao is None:
+        print("Falha ao obter conexão com banco de dados.")
+        return None
+
     try:
+        cursor = conexao.cursor()
+        cursor.execute("SELECT ID_ESTACAO FROM ESTACAO WHERE NOME = :1", [nome_estacao])
+        row = cursor.fetchone()
+        return row[0] if row else None
+    except oracledb.DatabaseError as e:
+        print(f"Erro ao buscar ID da estação {nome_estacao}: {e}")
+        return None
+    finally:
+        conexao.close()
+
+def iniciar_viagem(usuario):
+    """Inicia a simulação de uma viagem e registra no banco de dados."""
+    conexao = obter_conexao()
+    if conexao is None:
+        print("Falha ao obter conexão com banco de dados.")
+        return
+
+    try:
+        cursor = conexao.cursor()
+        
         print("\n===== Iniciar Viagem =====")
         origem = input("Digite a estação de origem: ").strip()
         destino = input("Digite a estação de destino: ").strip()
@@ -218,7 +242,7 @@ def iniciar_viagem(usuario):
             print(erro)
             return
 
-        print(f"Tempo estimado de viagem de {origem} para {destino}: {tempo_estimado} minutos.")
+        print(f"⏳ Tempo estimado de viagem de {origem} para {destino}: {tempo_estimado} minutos.")
 
         confirmacao = input("Deseja iniciar a viagem? (s/n): ").strip().lower()
         if confirmacao != 's':
@@ -226,19 +250,17 @@ def iniciar_viagem(usuario):
             return
 
         hora_partida = datetime.now()
-        print(f"Viagem iniciada às {hora_partida.strftime('%H:%M:%S')}.")
+        print(f"🚆 Viagem iniciada às {hora_partida.strftime('%H:%M:%S')}.\n")
         print("Aperte Enter para encerrar a viagem...")
-
-        # Aguarda o usuário pressionar Enter para encerrar a viagem
         input()
 
-        print(f"Finalinado a sua viagem, {usuario}...")
+        print(f"Finalizando a sua viagem, {usuario}...\n")
         time.sleep(3)
 
-        hora_chegada = datetime.now()
-        tempo_real = (hora_chegada - hora_partida).total_seconds() / 60
-        print(f"Viagem concluída às {hora_chegada.strftime('%H:%M:%S')}.")
-        print(f"Tempo real decorrido: {tempo_real:.2f} minutos.")
+        # Simula a chegada com base no tempo estimado
+        hora_chegada = hora_partida + timedelta(minutes=tempo_estimado)
+        print(f"🏁 Viagem concluída às {hora_chegada.strftime('%H:%M:%S')}.")
+        print(f"🕒 Tempo real decorrido: {tempo_estimado:.2f} minutos.")
 
         # Registro da viagem
         viagem = {
@@ -247,16 +269,33 @@ def iniciar_viagem(usuario):
             "destino": destino,
             "partida": hora_partida.strftime('%H:%M:%S'),
             "chegada": hora_chegada.strftime('%H:%M:%S'),
-            "tempo_estimado": tempo_estimado,
-            "tempo_real": tempo_real
+            "tempo_estimado": tempo_estimado
         }
         viagens.append(viagem)
         salvar_viagens_json()
 
-    except Exception as e:
-        print(f"Erro ao iniciar a viagem: {e}")
+        id_origem = obter_id_estacao(origem)
+        id_destino = obter_id_estacao(destino)
 
-    input("Pressione Enter para voltar...")
+        if id_origem is None or id_destino is None:
+            print("Erro: Estação de origem ou destino não encontrada no banco de dados.")
+            return
+
+        # Insere a viagem no banco
+        sql = """
+            INSERT INTO VIAGEM (ID_VIAGEM, HPARTIDA, HCHEGADA, ESTACAO_ORIGEM, ESTACAO_DESTINO)
+            VALUES (gerador_id_chall.NEXTVAL, :1, :2, :3, :4)
+        """
+        cursor.execute(sql, [hora_partida, hora_chegada, id_origem, id_destino])
+        conexao.commit()
+        print("✅ Viagem registrada com sucesso!\n")
+
+    except oracledb.DatabaseError as e:
+        print(f"❌ Erro ao registrar viagem: {e}")
+    finally:
+        if conexao:
+            conexao.close()
+
 
 # Relatório de viagens
 def exibir_relatorio(usuario):
@@ -266,7 +305,7 @@ def exibir_relatorio(usuario):
         # Verifica se a lista de viagens foi corretamente registrada
         if not viagens:
             print("Nenhuma viagem registrada até o momento.")
-            input("\nPressione Enter para voltar ao menu...")  # Pausa para o usuário ler
+            input("\nPressione Enter para voltar ao menu...")
             voltar_sair()  # Voltar ao menu
             return
 
@@ -274,7 +313,7 @@ def exibir_relatorio(usuario):
         
         if not viagens_usuario:
             print("Nenhuma viagem registrada para este usuário.")
-            input("\nPressione Enter para voltar ao menu...")  # Pausa para o usuário ler
+            input("\nPressione Enter para voltar ao menu...") 
         else:
             for i, v in enumerate(viagens_usuario, 1):
                 print(f"\n🚆 Viagem {i}")
@@ -283,7 +322,6 @@ def exibir_relatorio(usuario):
                 print(f"   ⏳ Partida: {v['partida']} | 🏁 Chegada: {v['chegada']}")
 
         input("\nPressione Enter para voltar ao menu...")
-        #limpar_tela()
 
     except Exception as e:
         print(f"❌ Erro ao exibir o relatório: {e}")
@@ -426,7 +464,6 @@ def centro_controle_operacional():
             
         except Exception as e:
             print(f"Erro ao exibir o painel de avisos: {e}")
-        #limpar_tela()
 
 # menu de cadastro/login
 def menu_inicial():
@@ -453,14 +490,13 @@ def menu_inicial():
         except Exception as e:
             print(f"Ocorreu um erro inesperado no menu: {e}")
 
-    #limpar_tela()
-
     return usuario
 
 ## menu após login
 def menu_principal(usuario):
     while True:
         try:
+            
             print(f"Bem vindo, {usuario}!")
             print("1. Mapa")
             print("2. Iniciar viagem")
@@ -489,8 +525,6 @@ def menu_principal(usuario):
 
         except Exception as e:
             print(f"Ocorreu um erro iniesperado: {e}")
-
-        #limpar_tela()
 
 
 ## conexao com banco de dados oracle
@@ -521,7 +555,6 @@ def inserir_usuario(usuario, email, senha):
             """
             cursor.execute(sql, [usuario, email, senha])
             conexao.commit()
-            print("Usuário inserido com sucesso!")
 
     except oracledb.IntegrityError as e:
         print(f"Erro de integridade: {e}")

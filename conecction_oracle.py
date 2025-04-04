@@ -7,6 +7,7 @@ def obter_conexao():
             password="200905",
             dsn="oracle.fiap.com.br/orcl"
         )
+
         return con
     except oracledb.DatabaseError as e:
         erro, = e.args

@@ -1,22 +1,10 @@
 {
-    "pedro": {
-        "email": "pedro@gmail.com",
+    "nelma": {
+        "email": "nelma@gmail.com",
         "senha": "1234"
     },
-    "antonio": {
-        "email": "antonio@gmail",
-        "senha": "12345"
-    },
-    "braufa": {
-        "email": "braufinha@hotmail.com",
-        "senha": "456"
-    },
-    "sulamita": {
-        "email": "sulamita@gmail.com",
-        "senha": "123"
-    },
-    "matheus henrique": {
-        "email": "mat@gmail.com",
-        "senha": "123"
+    "pedro henrique sena": {
+        "email": "pedrosena123@gmail.com",
+        "senha": "2020"
     }
 }
