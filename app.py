@@ -3,22 +3,20 @@ import os
 import json
 import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 import oracledb
 from conecction_oracle import obter_conexao
 import getpass
 
 '''
-O que devedemos focar para a próxima sprint é:
-1. Integração com banco de dados;
-2. Deixar o sistema extremamente parecido com o banco de dados;
-3. Integrar com o front;
-4. consumir uma API externa -> se formos usar uma API para dados da CPTM, devemos mudar
-a estrutura do sistema, ja que informações sobre linhas que não pertencem a CCR serão desconsideradas.
+1. Consumo de uma API externa pública;
+2. Integraçração com banco de dados (inserir ok, atualizar (pendente), deletar (pendente), select (ok));
+3. Realizar duas consultas no banco de dados (select, where) e ter a opção de exportar essas consultas
+para arquivos.json;
 
-update e delete
-duas consultas -> select where
-permitir exportar os dados dessas consultas para um arquivo json
+---------
+
+Restante é documentação.
 
 '''
 
