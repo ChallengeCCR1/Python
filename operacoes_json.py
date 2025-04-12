@@ -22,9 +22,19 @@ def carregar_viagens_json():
         print(f"Erro ao carregar viagem em JSON: {e}")
         viagens.clear()
 
-## def salvar_usuarios_json
+def carregar_usuarios_json():
+    try:
+        with open('usuarios.json', mode='r', encoding='utf-8') as arq:
+            dados = json.load(arq)
+            usuarios.clear()
+            usuarios.update(dados)
+    except FileNotFoundError:
+        usuarios.clear()
+    except Exception as e:
+        print(f"Erro ao carregar usuários em JSON: {e}")
+        usuarios.clear()
+
 def salvar_usuarios_json():
-    """Salva os usuários no arquivo JSON."""
     try:
         with open('usuarios.json', mode='w', encoding='utf-8') as arq:
             json.dump(usuarios, arq, ensure_ascii=False, indent=4)

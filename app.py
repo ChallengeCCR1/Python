@@ -6,8 +6,7 @@ from usuario import carregar_usuarios
 '''
 1. Consumo de uma API externa pública;
 2. Integraçração com banco de dados (inserir ok, atualizar (pendente), deletar (pendente), select (ok));
-3. Realizar duas consultas no banco de dados (select, where) e ter a opção de exportar essas consultas
-para arquivos.json;
+3. Fazer virar uma API com flask para usar no Java e assim usar no front-end;
 
 ---------
 

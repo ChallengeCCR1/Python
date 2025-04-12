@@ -1,14 +1,10 @@
 {
-    "SAMIRA": {
-        "email": "samira@gmail.com",
-        "senha": "1234"
+    "TESTE": {
+        "email": "teste@gmail.com",
+        "senha": "123"
     },
-    "ROMEU": {
-        "email": "romeu@gmail.com",
-        "senha": "romeu2020"
-    },
-    "MATTEUS": {
-        "email": "matteus@gmail.com",
-        "senha": "matteus123"
+    "PEDRO": {
+        "email": "pedrohenrique@gmail",
+        "senha": "123"
     }
 }

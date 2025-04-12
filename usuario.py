@@ -2,19 +2,20 @@ import getpass
 import json
 from conecction_oracle import inserir_usuario
 from operacoes_json import salvar_usuarios_json
-
+from dados import usuarios
 
 def carregar_usuarios():
     """Carrega os usuários do arquivo JSON."""
-    global usuarios
     try:
         with open('usuarios.json', mode='r', encoding='utf-8') as arq:
-            usuarios = json.load(arq)
+            dados = json.load(arq)
+            usuarios.clear()
+            usuarios.update(dados)
     except FileNotFoundError:
-        usuarios = {}
+        usuarios.clear()
     except Exception as e:
         print(f"Ocorreu um erro ao carregar o arquivo: {e}")
-        usuarios = {}
+        usuarios.clear()
 
 def cadastrar_usuario():
     """Cadastra um novo usuário."""
