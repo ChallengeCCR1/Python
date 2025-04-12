@@ -1,1 +1,22 @@
-[]
+[
+    {
+        "usuario": "MATTEUS",
+        "origem": "Osasco",
+        "destino": "Grajaú",
+        "partida": "14:19:59",
+        "chegada": "14:20:00",
+        "tempo_estimado": 70,
+        "tempo_real": 0.018049183333333333,
+        "data": "12/04/2025"
+    },
+    {
+        "usuario": "MATTEUS",
+        "origem": "Morumbi",
+        "destino": "Osasco",
+        "partida": "14:20:39",
+        "chegada": "14:20:40",
+        "tempo_estimado": 40,
+        "tempo_real": 0.023580716666666668,
+        "data": "12/04/2025"
+    }
+]

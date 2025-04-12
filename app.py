@@ -16,6 +16,7 @@ Restante é documentação.
 '''
 
 if __name__ == "__main__":
+    viagens = []  # lista global
     carregar_viagens_json()
     carregar_usuarios()
     while True:

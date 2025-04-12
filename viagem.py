@@ -3,8 +3,8 @@ import oracledb
 
 from conecction_oracle import obter_conexao
 from operacoes_json import carregar_viagens_json, salvar_viagens_json
-from operacoes_json import viagens
 from datetime import datetime
+from dados import viagens
 
 # tempo de viagem entre estações linha 9 esmeralda
 tempos_viagem = {
@@ -156,6 +156,7 @@ def iniciar_viagem(usuario):
             "data": data_viagem 
         }
 
+        global viagens
         viagens.append(viagem)
         salvar_viagens_json()
         

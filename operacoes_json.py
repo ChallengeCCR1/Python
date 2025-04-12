@@ -1,15 +1,9 @@
+from dados import viagens, usuarios
+
 import json
 
-usuarios = {}
-avisos = [
-    "Linha 4 Amarela com grande fluxo de passageiros neste momento.", #0
-    "Linha 8 Diamante com atrasos de 10 minutos.", #1
-    "Linha 9 Esmeralda operando normalmente."#2
-]
-
-viagens = []
-
 def salvar_viagens_json():
+    global viagens
     try:
         with open('viagens.json', mode='w', encoding='utf-8') as arq:
             json.dump(viagens, arq, ensure_ascii=False, indent=4)
@@ -17,15 +11,16 @@ def salvar_viagens_json():
         print(f"Ocorreu um erro ao salvar o arquivo: {e}")
 
 def carregar_viagens_json():
-    global viagens
     try:
         with open('viagens.json', mode='r', encoding='utf-8') as arq:
-            viagens = json.load(arq)
+            dados_carregados = json.load(arq)
+            viagens.clear()  # limpa a lista atual
+            viagens.extend(dados_carregados)  # mantém a mesma referência
     except FileNotFoundError:
-        viagens = []
+        viagens.clear()
     except Exception as e:
         print(f"Erro ao carregar viagem em JSON: {e}")
-        viagens = []
+        viagens.clear()
 
 ## def salvar_usuarios_json
 def salvar_usuarios_json():

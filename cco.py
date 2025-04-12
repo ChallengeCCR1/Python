@@ -1,4 +1,4 @@
-from operacoes_json import avisos
+from dados import avisos
 
 def centro_controle_operacional():
     while True:

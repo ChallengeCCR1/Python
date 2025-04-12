@@ -3,12 +3,11 @@ from cco import centro_controle_operacional
 from conecction_oracle import exportar_estacoes_para_json
 from funcoes import exibir_nome_do_programa
 from mapa import mapa_linha
+from operacoes_json import carregar_viagens_json
 from previsao_pico import previsao_pico
 from relatorio import exibir_relatorio
 from usuario import cadastrar_usuario, fazer_login
 from viagem import iniciar_viagem
-from operacoes_json import salvar_viagens_json, viagens
-from operacoes_json import carregar_viagens_json
 
 
 def menu_inicial():
@@ -41,6 +40,7 @@ def menu_inicial():
 def menu_principal(usuario):
     while True:
         try:
+            carregar_viagens_json()
             exibir_nome_do_programa()
             
             print(f"\nBem vindo, {usuario}!")
