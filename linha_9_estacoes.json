@@ -1,0 +1,70 @@
+[
+    {
+        "nome": "Osasco",
+        "localizacao": "Centro, Osasco - SP"
+    },
+    {
+        "nome": "Pinheiros",
+        "localizacao": "Rua Capri, 145"
+    },
+    {
+        "nome": "Presidente Altino",
+        "localizacao": "Av. dos Autonomistas, Osasco - SP"
+    },
+    {
+        "nome": "Ceasa",
+        "localizacao": "Av. Eng. Billings, São Paulo - SP"
+    },
+    {
+        "nome": "Vila Lobos",
+        "localizacao": "Próximo ao Parque Villa-Lobos, São Paulo - SP"
+    },
+    {
+        "nome": "Cidade Jardim",
+        "localizacao": "Av. das Nações Unidas, São Paulo - SP"
+    },
+    {
+        "nome": "Vila Olimpia",
+        "localizacao": "Av. Dr. Cardoso de Melo, São Paulo - SP"
+    },
+    {
+        "nome": "Berrini",
+        "localizacao": "Próximo à Av. Eng. Luís Carlos Berrini, SP"
+    },
+    {
+        "nome": "Morumbi",
+        "localizacao": "Av. Roque Petroni Jr., São Paulo - SP"
+    },
+    {
+        "nome": "Granja Julieta",
+        "localizacao": "Rua Laguna, São Paulo - SP"
+    },
+    {
+        "nome": "João Dias",
+        "localizacao": "Av. João Dias, São Paulo - SP"
+    },
+    {
+        "nome": "Santo Amaro",
+        "localizacao": "Terminal Santo Amaro, São Paulo - SP"
+    },
+    {
+        "nome": "Socorro",
+        "localizacao": "Av. Guido Caloi, São Paulo - SP"
+    },
+    {
+        "nome": "Jurubatuba",
+        "localizacao": "Av. das Nações Unidas, São Paulo - SP"
+    },
+    {
+        "nome": "Autódromo",
+        "localizacao": "Próximo ao Autódromo de Interlagos, SP"
+    },
+    {
+        "nome": "Interlagos",
+        "localizacao": "Av. Interlagos, São Paulo - SP"
+    },
+    {
+        "nome": "Grajaú",
+        "localizacao": "Terminal Grajaú, São Paulo - SP"
+    }
+]

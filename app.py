@@ -7,6 +7,7 @@ from datetime import datetime
 import oracledb
 from conecction_oracle import obter_conexao
 import getpass
+import sqlite3
 
 '''
 1. Consumo de uma API externa pública;
@@ -515,6 +516,51 @@ def centro_controle_operacional():
         except Exception as e:
             print(f"Erro ao exibir o painel de avisos: {e}")
 
+def exportar_estacoes_para_json():
+    nome_linha = input("Digite o nome da linha (ex: Linha 9): ")
+
+    conexao = obter_conexao()
+    if conexao is None:
+        print("Falha ao obter conexão com banco de dados.")
+        return
+
+    try:
+        with conexao.cursor() as cursor:
+            
+            cursor.execute("SELECT id_linhametro FROM LinhaMetro WHERE LOWER(nome) = :1", [nome_linha.lower()])
+            resultado = cursor.fetchone()
+            
+            if resultado is None:
+                print("Linha não encontrada.")
+                return
+            
+            id_linha = resultado[0]
+
+            
+            cursor.execute("""
+                SELECT nome, localizacao FROM Estacao
+                WHERE id_linhametro = :1
+                """, [id_linha])
+
+            estacoes = cursor.fetchall()
+            if not estacoes:
+                print("Nenhuma estação encontrada para essa linha.")
+                return
+
+            estacoes_json = [{"nome": nome, "localizacao": local} for nome, local in estacoes]
+            nome_arquivo = nome_linha.replace(" ", "_").lower() + "_estacoes.json"
+
+            with open(nome_arquivo, "w", encoding="utf-8") as arquivo:
+                json.dump(estacoes_json, arquivo, indent=4, ensure_ascii=False)
+
+            print(f"Estações da {nome_linha} exportadas com sucesso para {nome_arquivo}!")
+
+    except Exception as e:
+        print(f"Erro durante exportação: {e}")
+    finally:
+        conexao.close()
+
+
 # menu de cadastro/login
 def menu_inicial():
     usuario = None
@@ -554,7 +600,8 @@ def menu_principal(usuario):
             print("3. Relatório de viagens")
             print("4. Status Operacional")
             print("5. Previsão de pico")
-            print("6. logout")
+            print("6. Exportar estações para JSON")
+            print("7. logout")
 
             opcao = input("Escolha uma opção: ")
 
@@ -569,6 +616,8 @@ def menu_principal(usuario):
             elif opcao == '5':
                 previsao_pico()
             elif opcao == '6':
+                exportar_estacoes_para_json()
+            elif opcao == '7':
                 print(f"Poxa, {usuario}! Parece que escolheu sair...")
                 return
             else:
@@ -579,8 +628,6 @@ def menu_principal(usuario):
 
 
 ## conexao com banco de dados oracle
-import oracledb
-
 def inserir_usuario(usuario, email, senha):
     conexao = obter_conexao()
     if conexao is None:
