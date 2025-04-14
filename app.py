@@ -58,5 +58,11 @@ def previsao_pico():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     
+@app.route('/')
+def home():
+    return jsonify({
+        "mensagem": "API de Previsão de Pico e Mapa da Linha 9 Esmeralda. Use as rotas /mapa/linha9 e /pico?estacao=NomeDaEstacao"
+    })
+    
 if __name__ == "__main__":
     app.run(debug=True)
