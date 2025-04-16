@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from datetime import datetime
 import pandas as pd
-from noticias_metro import obter_noticias_metro
 #from flask_cors import CORS
 #CORS(app)
 
@@ -59,12 +58,7 @@ def previsao_pico():
         })
 
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
-
-@app.route('/noticias/metro', methods=['GET'])
-def noticias_metro():
-    artigos = obter_noticias_metro()
-    return jsonify(artigos)            
+        return jsonify({"erro": str(e)}), 500           
 
 @app.route('/')
 def home():
