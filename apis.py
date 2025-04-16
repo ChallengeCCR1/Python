@@ -18,7 +18,7 @@ def buscar_status_linhas_4_8_9():
 
         resultados = []
         for linha in info:
-            codigo = str(linha.get('codigo'))  # FORÇANDO PARA STRING
+            codigo = str(linha.get('codigo')) 
             if codigo in nomes_linhas:
                 resultados.append({
                     "nome": nomes_linhas[codigo],

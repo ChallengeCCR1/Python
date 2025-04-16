@@ -1,5 +1,4 @@
-from dados import avisos
-from status_linhas import buscar_status_linhas_4_8_9
+from apis import buscar_status_linhas_4_8_9
 
 def centro_controle_operacional():
     while True:
