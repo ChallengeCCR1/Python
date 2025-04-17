@@ -1,8 +1,7 @@
 from flask import Flask, jsonify, request
 from datetime import datetime
 import pandas as pd
-#from flask_cors import CORS
-#CORS(app)
+from previsao_pico import obter_fluxo, gerar_grafico
 
 app = Flask(__name__)
 
@@ -28,37 +27,29 @@ def mapa_linha9():
     })
 
 ## previsao de pico
-@app.route('/pico', methods=['GET'])
-def previsao_pico():
-    estacao = request.args.get('estacao')
+@app.route("/api/pico", methods=["GET"])
+def api_previsao_pico():
+    estacao = request.args.get("estacao")
+    horario = request.args.get("horario")  # opcional
+
     if not estacao:
-        return jsonify({
-            "erro": "Parâmetro 'estacao' é obrigatório.",
-        }), 400
-    
-    try:
-        df = pd.read_csv("fluxo_passageiros.csv")
-        df_estacao = df[df["Estacao"] == estacao]
+        return jsonify({"erro": "Informe o nome da estação via parâmetro 'estacao'."}), 400
 
-        if df_estacao.empty:
-            return jsonify({"erro": f"Estação '{estacao}' não encontrada ou sem dados."}), 404
+    resultado, status = obter_fluxo(estacao, horario)
+    return jsonify(resultado), status
 
-        df_estacao["Horario"] = pd.to_datetime(df_estacao["Horario"], format='%H:%M').dt.time
-        horario_atual = datetime.now().time()
-        horario_mais_proximo = min(
-            df_estacao["Horario"],
-            key=lambda x: abs(datetime.combine(datetime.today(), x) - datetime.combine(datetime.today(), horario_atual))
-        )
+@app.route("/api/pico/grafico", methods=["GET"])
+def api_grafico_pico():
+    estacao = request.args.get("estacao")
 
-        fluxo = df_estacao[df_estacao["Horario"] == horario_mais_proximo]["Passageiros"].values[0]
-        return jsonify({
-            "estacao": estacao,
-            "horario_mais_proximo": horario_mais_proximo.strftime("%H:%M"),
-            "fluxo_passageiros": int(fluxo)
-        })
+    if not estacao:
+        return jsonify({"erro": "Informe o nome da estação via parâmetro 'estacao'."}), 400
 
-    except Exception as e:
-        return jsonify({"erro": str(e)}), 500           
+    imagem_base64, status = gerar_grafico(estacao)
+    if status != 200:
+        return jsonify({"erro": "Erro ao gerar gráfico."}), status
+
+    return jsonify({"estacao": estacao, "grafico_base64": imagem_base64})        
 
 @app.route('/')
 def home():
