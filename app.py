@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
-from datetime import datetime
 import pandas as pd
 from previsao_pico import obter_fluxo, gerar_grafico
+from apis import buscar_status_linhas_4_8_9
 
 app = Flask(__name__)
 
@@ -49,7 +49,16 @@ def api_grafico_pico():
     if status != 200:
         return jsonify({"erro": "Erro ao gerar gráfico."}), status
 
-    return jsonify({"estacao": estacao, "grafico_base64": imagem_base64})        
+    return jsonify({"estacao": estacao, "grafico_base64": imagem_base64})      
+
+## status das linhas 4, 8 e 9
+@app.route("/status_linhas_ccr", methods=["GET"])
+def status_linhas():
+    try:
+        status = buscar_status_linhas_4_8_9()
+        return jsonify(status)
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500  
 
 @app.route('/')
 def home():
