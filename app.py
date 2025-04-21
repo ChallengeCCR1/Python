@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-import pandas as pd
+import os
 from previsao_pico import obter_fluxo, gerar_grafico
 from apis import buscar_status_linhas_4_8_9
 
@@ -67,4 +67,5 @@ def home():
     })
     
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
     app.run(debug=True)
