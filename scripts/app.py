@@ -6,7 +6,7 @@ from apis import buscar_status_linhas_4_8_9
 app = Flask(__name__)
 
 ## mapa
-@app.route('/mapa/linha9', methods=['GET'])
+@app.route('/api/mapa/linha9', methods=['GET'])
 def mapa_linha9():
     estacoes = [
         "Osasco", "Presidente Altino", "Ceasa", "Villa Lobos", "Pinheiros", "Cidade Jardim",
@@ -52,7 +52,7 @@ def api_grafico_pico():
     return jsonify({"estacao": estacao, "grafico_base64": imagem_base64})      
 
 ## status das linhas 4, 8 e 9
-@app.route("/status_linhas_ccr", methods=["GET"])
+@app.route("/api/status_linhas_ccr", methods=["GET"])
 def status_linhas():
     try:
         status = buscar_status_linhas_4_8_9()
