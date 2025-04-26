@@ -50,7 +50,7 @@ def exportar_estacoes_para_json():
             estacoes_json = [{"nome": nome, "localizacao": local} for nome, local in estacoes]
             nome_arquivo = nome_linha.replace(" ", "_").lower() + "_estacoes.json"
 
-            with open(nome_arquivo, "w", encoding="utf-8") as arquivo:
+            with open(f'dados/{nome_arquivo}', "w", encoding="utf-8") as arquivo:
                 json.dump(estacoes_json, arquivo, indent=4, ensure_ascii=False)
 
             print(f"Estações da {nome_linha} exportadas com sucesso para {nome_arquivo}!\n")

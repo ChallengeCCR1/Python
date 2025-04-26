@@ -1,6 +1,10 @@
 {
-    "TESTE": {
-        "email": "teste@gmail.com",
+    "TEST": {
+        "email": "test@hotmail.com",
         "senha": "123"
+    },
+    "TEST2@OUTLOOK.COM": {
+        "email": "1234",
+        "senha": "1234"
     }
 }

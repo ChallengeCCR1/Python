@@ -4,7 +4,7 @@ from conecction_oracle import exportar_estacoes_para_json
 from funcoes import exibir_nome_do_programa
 from mapa import mapa_linha
 from operacoes_json import carregar_viagens_json
-from previsao_pico import previsao_pico
+from previsao_pico import previsao_pico_menu
 from relatorio import exibir_relatorio
 from usuario import cadastrar_usuario, fazer_login
 from viagem import iniciar_viagem
@@ -63,7 +63,7 @@ def menu_principal(usuario):
             elif opcao == '4':
                 centro_controle_operacional()
             elif opcao == '5':
-                previsao_pico()
+                previsao_pico_menu()
             elif opcao == '6':
                 exportar_estacoes_para_json()
             elif opcao == '7':

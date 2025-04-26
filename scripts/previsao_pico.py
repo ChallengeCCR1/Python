@@ -12,7 +12,7 @@ ccr_estacoes = {
                           "Socorro", "Jurubatuba", "Autódromo", "Interlagos", "Grajaú"]
 }
 
-df = pd.read_csv("fluxo_passageiros.csv")
+df = pd.read_csv("dados/fluxo_passageiros.csv")
 df["Horario"] = pd.to_datetime(df["Horario"], format='%H:%M').dt.time
 
 def estacao_valida(nome_estacao):
@@ -76,3 +76,31 @@ def gerar_grafico(estacao):
     buffer.seek(0)
     imagem_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
     return imagem_base64, 200
+
+def previsao_pico_menu():
+    print("\n--- Previsão de Pico ---")
+    print("1. Obter pico atual de uma estação")
+    print("2. Obter pico de uma estação em um horário específico")
+    print("3. Obter gráfico do fluxo de uma estação")
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == '1':
+        estacao = input("Digite o nome da estação: ")
+        resultado, status = obter_fluxo(estacao)
+        print(resultado)
+
+    elif opcao == '2':
+        estacao = input("Digite o nome da estação: ")
+        horario = input("Digite o horário no formato HH:MM: ")
+        resultado, status = obter_fluxo(estacao, horario)
+        print(resultado)
+
+    elif opcao == '3':
+        estacao = input("Digite o nome da estação: ")
+        gerar_grafico(estacao)
+        # if status == 200:
+        #     print(f"Gráfico gerado em base64! (tamanho {len(imagem_base64)} caracteres)")
+        # else:
+        #     print("Erro ao gerar gráfico.")
+    else:
+        print("Opção inválida!")

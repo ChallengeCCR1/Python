@@ -1,6 +1,6 @@
 from menu import menu_inicial, menu_principal
 from operacoes_json import carregar_viagens_json
-from usuario import carregar_usuarios
+from usuario import carregar_usuarios_json
 
 
 '''
@@ -16,7 +16,7 @@ Restante é documentação.
 if __name__ == "__main__":
     viagens = []  # lista global
     carregar_viagens_json()
-    carregar_usuarios()
+    carregar_usuarios_json()
     while True:
         usuario_logado = menu_inicial()
         menu_principal(usuario_logado)
