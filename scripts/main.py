@@ -4,10 +4,10 @@ from usuario import carregar_usuarios_json
 
 
 '''
-1. Consumo de uma API externa pública;
-2. Integraçração com banco de dados (inserir ok, atualizar (pendente), deletar (pendente), select (ok));
-3. Fazer virar uma API com flask para usar no Java e assim usar no front-end;
+- Integraçração com banco de dados (inserir ok, atualizar (pendente), deletar (pendente), select (ok/50%));
+   - Fazer select (exportar json) e opção de atualizar/deletar usuário -> banco de dados e python
 
+- Documentação com códigos do banco de dados que devem ser usados para a aplicação rodar
 ---------
 
 Restante é documentação.
