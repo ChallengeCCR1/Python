@@ -6,5 +6,9 @@
     "TEST2@OUTLOOK.COM": {
         "email": "1234",
         "senha": "1234"
+    },
+    "PEDRINHO": {
+        "email": "pedrinho@gmail.com",
+        "senha": "1234"
     }
 }

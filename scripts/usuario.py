@@ -42,7 +42,6 @@ def cadastrar_usuario():
     except Exception as e:
         print(f"Ocorreu um erro durante o cadastro: {e}")
 
-
 def fazer_login():
     """Realiza o login de um usuário utilizando e-mail e senha."""
     try:

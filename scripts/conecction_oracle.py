@@ -69,7 +69,7 @@ def inserir_usuario(usuario, email, senha):
     
     try:
         with conexao.cursor() as cursor:
-            email = email.lower()  # Normaliza o e-mail para evitar duplicatas com maiúsculas/minúsculas
+            email = email.lower()  
             
             # Verifica se o e-mail já existe
             cursor.execute("SELECT COUNT(*) FROM Usuario_Challenge WHERE LOWER(email) = :1", [email])
@@ -91,6 +91,32 @@ def inserir_usuario(usuario, email, senha):
         print(f"Erro de integridade: {e}")
     except oracledb.DatabaseError as e:
         print(f"Erro ao inserir usuário: {e}")
+    finally:
+        if conexao:
+            conexao.close()
+
+def excluir_usuario(usuario, email):
+    conexao = obter_conexao()
+    if conexao is None:
+        print("Falha ao obter conexão com banco de dados.")
+        return
+    
+    try:
+        with conexao.cursor() as cursor:
+            email = email.lower()
+
+            cursor.execute("SELECT COUNT(*) FROM Usuario_Challenge WHERE LOWER(email) = :1 AND nome = :2", [email, usuario])
+            resultado = cursor.fetchone()
+
+            if resultado[0] == 0:
+                print("Usuário não encontrado. Nenhum registro foi excluído.")
+                return
+            
+            cursor.execute("DELETE FROM Usuario_Challenge WHERE LOWER(email) = :1 AND nome = :2", [email, usuario])
+            conexao.commit()
+            print("Usuário excluído com sucesso.")
+    except oracledb.DatabaseError as e:
+        print(f"Erro ao excluir usuário: {e}")
     finally:
         if conexao:
             conexao.close()
