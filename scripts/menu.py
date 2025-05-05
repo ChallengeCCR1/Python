@@ -1,6 +1,7 @@
 # menu de cadastro/login
+import getpass
 from cco import centro_controle_operacional
-from conecction_oracle import excluir_usuario, exportar_estacoes_para_json
+from conecction_oracle import atualizar_usuario, excluir_usuario, exportar_estacoes_para_json
 from funcoes import exibir_nome_do_programa
 from mapa import mapa_linha
 from operacoes_json import carregar_viagens_json
@@ -69,11 +70,18 @@ def menu_principal(usuario):
             elif opcao == '6':
                 exportar_estacoes_para_json()
             elif opcao == '7':
-                nome = input("Nome do uusário a excluir: ")
+                print("\n==== Remover usuário ====")
+                nome = input("Nome do usário a excluir: ")
                 email = input("E-mail do usuário: ")
                 excluir_usuario(nome, email)
             elif opcao == '8':
-                exportar_estacoes_para_json()    
+                print("\n==== Atualizar usuário ====")
+                nome_atual = input("Nome atual: ")
+                email_atual = input("E-mail atual: ")
+                novo_nome = input("Novo nome: ")
+                novo_email = input("Novo e-mail: ")
+                nova_senha = getpass.getpass("Nova senha: ")
+                atualizar_usuario(nome_atual, email_atual, novo_nome, novo_email, nova_senha)    
             elif opcao == '9':
                 print(f"Poxa, {usuario}! Parece que escolheu sair...")
                 return

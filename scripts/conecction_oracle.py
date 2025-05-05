@@ -120,3 +120,40 @@ def excluir_usuario(usuario, email):
     finally:
         if conexao:
             conexao.close()
+
+def atualizar_usuario(nome_atual, email_atual, novo_nome, novo_email, nova_senha):
+    conexao = obter_conexao()
+    if conexao is None:
+        print("Falha ao obter conexão com o banco de dados.")
+        return
+
+    try:
+        with conexao.cursor() as cursor:
+            email_atual = email_atual.lower()
+            novo_email = novo_email.lower()
+
+            # Verifica se o usuário existe
+            cursor.execute("""
+                SELECT COUNT(*) FROM Usuario_Challenge
+                WHERE LOWER(email) = :1 AND nome = :2
+            """, [email_atual, nome_atual])
+            resultado = cursor.fetchone()
+
+            if resultado[0] == 0:
+                print("Usuário não encontrado. Nenhuma alteração feita.")
+                return
+
+            # Atualiza os dados
+            cursor.execute("""
+                UPDATE Usuario_Challenge
+                SET nome = :1, email = :2, senha = :3
+                WHERE LOWER(email) = :4 AND nome = :5
+            """, [novo_nome, novo_email, nova_senha, email_atual, nome_atual])
+            conexao.commit()
+            print("Usuário atualizado com sucesso.")
+
+    except oracledb.DatabaseError as e:
+        print(f"Erro ao atualizar usuário: {e}")
+    finally:
+        if conexao:
+            conexao.close()
