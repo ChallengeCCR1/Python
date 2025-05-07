@@ -68,5 +68,5 @@ Este projeto foi desenvolvido por:
   [LinkedIn](https://www.linkedin.com/in/sulamita-viegas-dos-santos-280210223/) | [GitHub](https://github.com/Sulamita020905)
 
 ---
-📄 Licença
+## 📄 Licença<br>
 ©Todos os direitos reservados
