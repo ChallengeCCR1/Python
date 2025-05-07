@@ -33,11 +33,11 @@ A aplicação visa auxiliar os usuários a visualizarem o movimento das estaçõ
 ## 🗂 Estrutura do Projeto
 
 📁 Python/
-├── app.py # Script principal do sistema
-├── conecction_oracle.py # Simulação de conexão com Oracle (não funcional)
-├── fluxo_passageiros.csv # Dados simulados de fluxo de passageiros
-├── usuarios.json # Base simulada de usuários cadastrados
-├── viagens.json # Histórico de viagens registradas
+├── app.py # Script principal do sistema<br>
+├── conecction_oracle.py # Simulação de conexão com Oracle (não funcional)<br>
+├── fluxo_passageiros.csv # Dados simulados de fluxo de passageiros<br>
+├── usuarios.json # Base simulada de usuários cadastrados<br>
+├── viagens.json # Histórico de viagens registradas<br>
 
 ---
 
