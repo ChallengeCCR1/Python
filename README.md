@@ -56,15 +56,15 @@ Este projeto foi desenvolvido por:
 
 - **Pedro Henrique Sena**  
   Desenvolvedor Full Stack e Documentação  
-  [LinkedIn](https://www.linkedin.com/in/pedro-henrique-sena/) | [GitHub]((https://github.com/devpedrosena1))
+  [LinkedIn](https://www.linkedin.com/in/pedro-henrique-sena/) | [GitHub](https://github.com/devpedrosena1)
 
 - **Matteus Viegas**  
   Desenvolvedor Front End  
-  [LinkedIn](https://www.linkedin.com/in/matteus-viegas-533437294/) | [GitHub](https://github.com/ChallengeOne-MAT))
+  [LinkedIn](https://www.linkedin.com/in/matteus-viegas-533437294/) | [GitHub](https://github.com/ChallengeOne-MAT)
 
 - **Carlos Souza**  
   Gestora de Negócios  
-  [LinkedIn](https://www.linkedin.com/in/sulamita-viegas-dos-santos-280210223/) | [GitHub](https://github.com/Sulamita020905))
+  [LinkedIn](https://www.linkedin.com/in/sulamita-viegas-dos-santos-280210223/) | [GitHub](https://github.com/Sulamita020905)
 
 ---
 📄 Licença
