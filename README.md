@@ -62,7 +62,7 @@ Este projeto foi desenvolvido por:
   Desenvolvedor Front End  
   [LinkedIn](https://www.linkedin.com/in/matteus-viegas-533437294/) | [GitHub](https://github.com/ChallengeOne-MAT)
 
-- **Carlos Souza**  
+- **Sulamita Viegas**  
   Gestora de Negócios  
   [LinkedIn](https://www.linkedin.com/in/sulamita-viegas-dos-santos-280210223/) | [GitHub](https://github.com/Sulamita020905)
 
