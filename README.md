@@ -28,6 +28,7 @@ A aplicação visa auxiliar os usuários a visualizarem o movimento das estaçõ
   - `datetime` (registro de horário de viagem)
   - `random` (geração automática de fluxo de passageiros)
   - `Oracledb` (armazenamento de dados)
+  - `Flask` (Criação de API)
 
 ## 🗂 Estrutura do Projeto
 
