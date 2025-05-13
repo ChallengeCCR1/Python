@@ -36,11 +36,15 @@ A aplicação visa auxiliar os usuários a visualizarem o movimento das estaçõ
 
 1. **Clone o repositório:**
 
-git clone https://github.com/ChallengeCCR1/Python.git<br>
-cd Python<br>
-python app.py
+- git clone https://github.com/ChallengeCCR1/Python.git<br>
+- cd Python<br>
+- python app.py
 
 --- 
+## O nosso projeto está hospedado na plataforma render (https://render.com)
+- Link da aplicação hospedada: https://api-previsao-pico.onrender.com
+
+---
 
 ## 👥 Equipe
 
